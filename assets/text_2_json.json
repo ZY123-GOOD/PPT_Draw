@@ -1,0 +1,137 @@
+{
+  "elements": [
+    {
+      "id": 1,
+      "type": "text",
+      "bbox": [
+        50,
+        30,
+        950,
+        120
+      ],
+      "center": [
+        500,
+        75
+      ],
+      "label": "Title: Alignment Algorithms Comparison: RLHF vs. DPO vs. GRPO",
+      "style": {
+        "shape": "none",
+        "fill_color": "#FFFFFF",
+        "text_alignment": "center",
+        "drawing_instruction": "Top header area, centered text, font size 32pt, bold, dark gray color (#333333), academic sans-serif font."
+      },
+      "structure": {},
+      "description": "Main title of the slide"
+    },
+    {
+      "id": 2,
+      "type": "table",
+      "bbox": [
+        50,
+        140,
+        950,
+        550
+      ],
+      "center": [
+        500,
+        345
+      ],
+      "label": "Method Comparison Table:\nColumns: Algorithm | Core Mechanism | Reward Model Required? | Training Stability | Computational Cost\nRows:\nRLHF (PPO) - Policy optimization via reward maximization - Yes (Explicit RM) - Low (Sensitive to hyperparams) - High (Needs Actor/Critic/Ref/RM)\nDPO - Direct preference optimization via classification loss - No (Implicit reward) - High (Stable BCE loss) - Medium (Only Actor + Ref)\nGRPO - Group relative policy optimization (PPO variant) - No (Uses group baseline) - Medium-High - Medium (No Critic network)",
+      "style": {
+        "shape": "rectangle",
+        "fill_color": "#F8F9FA",
+        "text_alignment": "left",
+        "drawing_instruction": "Full width table below title. Header row background #E9ECEF, bold text. Data rows alternating white and very light gray. Borders thin gray (#DEE2E6). Text left-aligned with 10px padding. Font size 14pt for content, 16pt for headers."
+      },
+      "structure": {
+        "rows": 4,
+        "cols": 5,
+        "cells": [
+          [
+            "Algorithm",
+            "Core Mechanism",
+            "Reward Model Required?",
+            "Training Stability",
+            "Computational Cost"
+          ],
+          [
+            "RLHF (PPO)",
+            "Policy optimization via reward maximization",
+            "Yes (Explicit RM)",
+            "Low (Sensitive to hyperparams)",
+            "High (Needs Actor/Critic/Ref/RM)"
+          ],
+          [
+            "DPO",
+            "Direct preference optimization via classification loss",
+            "No (Implicit reward)",
+            "High (Stable BCE loss)",
+            "Medium (Only Actor + Ref)"
+          ],
+          [
+            "GRPO",
+            "Group relative policy optimization (PPO variant)",
+            "No (Uses group baseline)",
+            "Medium-High",
+            "Medium (No Critic network)"
+          ]
+        ],
+        "axis_labels": "",
+        "scatter_items": ""
+      },
+      "description": "Detailed comparison of the three methods across key dimensions"
+    },
+    {
+      "id": 3,
+      "type": "coordinate_chart",
+      "bbox": [
+        50,
+        570,
+        600,
+        950
+      ],
+      "center": [
+        325,
+        760
+      ],
+      "label": "Conceptual Relationship Chart:\nX-axis: Training Complexity & Infrastructure Overhead (Low → High)\nY-axis: Optimization Stability & Ease of Tuning (Low → High)\n\nPoints:\nDPO: Bottom-Left area (x=20%, y=30%) - Blue dot. Represents low complexity but moderate stability constraints due to implicit reward assumption.\nGRPO: Top-Middle area (x=50%, y=80%) - Green dot. Represents balanced complexity (no critic) with high stability via group normalization.\nRLHF: Bottom-Right area (x=90%, y=20%) - Orange dot. Represents highest complexity (4 models) and lowest stability (hyperparameter sensitivity).",
+      "style": {
+        "shape": "rectangle",
+        "fill_color": "#FFFFFF",
+        "text_alignment": "center",
+        "drawing_instruction": "2D Scatter plot container. White background with light gray grid lines. Axes labeled clearly in 12pt font. Data points are large circles (radius 8px) with labels next to them. Legend not needed if labels are clear. Style is clean academic."
+      },
+      "structure": {
+        "rows": "",
+        "cols": "",
+        "cells": "",
+        "axis_labels": "X: Complexity/Overhead; Y: Stability/Ease",
+        "scatter_items": "[{\"name\": \"DPO\", \"x\": 0.2, \"y\": 0.3, \"color\": \"#007BFF\"}, {\"name\": \"GRPO\", \"x\": 0.5, \"y\": 0.8, \"color\": \"#28A745\"}, {\"name\": \"RLHF\", \"x\": 0.9, \"y\": 0.2, \"color\": \"#FD7E14\"}]"
+      },
+      "description": "Visualizing the trade-off between complexity and stability"
+    },
+    {
+      "id": 4,
+      "type": "box",
+      "bbox": [
+        620,
+        570,
+        950,
+        950
+      ],
+      "center": [
+        785,
+        760
+      ],
+      "label": "Summary & Key Takeaways:\n1. RLHF: The gold standard for performance but computationally expensive and unstable.\n2. DPO: Simplifies pipeline by removing the Reward Model, offering stability but relying on static datasets.\n3. GRPO: Emerging efficient alternative. Removes the Critic model, using group-based baselines for stable, low-cost online learning.",
+      "style": {
+        "shape": "rectangle",
+        "fill_color": "#E3F2FD",
+        "text_alignment": "left",
+        "drawing_instruction": "Summary card on the right side. Light blue background to distinguish from chart. Rounded corners (radius 10px). Title 'Summary' in bold 18pt. Bullet points in 14pt dark text. Padding 20px inside the box. Border left 4px solid #2196F3."
+      },
+      "structure": {},
+      "description": "Textual summary highlighting the core distinction and use case for each method"
+    }
+  ]
+}

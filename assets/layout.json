@@ -1,0 +1,620 @@
+{
+    "metadata": {},
+    "elements": [
+        {
+            "id": 1,
+            "type": "coordinate_chart",
+            "bbox": [
+                502,
+                416,
+                970,
+                882
+            ],
+            "label": "Conceptual Relationship\ntop: Dense supervision\nSupervision density\nbottom: Sparse reward\nleft: Off-policy\nSampling distribution\nright: On-policy\nSFT → On-policy distillation → OPD\nRL simplification\nReward restructuring\nDPO\nGRPO\nRLHF\nBlue: Supervised methods, Orange: RL methods, Green: Distillation, Purple: Preference optimization",
+            "center": [
+                745,
+                648
+            ],
+            "style": {
+                "shape": "none",
+                "fill_color": "#FFFFFF",
+                "text_alignment": "left",
+                "drawing_instruction": "二维散点坐标系图，X轴为采样分布（Off-policy → On-policy），Y轴为监督密度（Sparse → Dense），图中包含五个彩色圆形节点（SFT、OPD、DPO、GRPO、RLHF）及连接箭头，标注概念关系"
+            },
+            "structure": {
+                "rows": 0,
+                "cols": 0,
+                "cells": [],
+                "axis_labels": [
+                    "top: Dense supervision",
+                    "bottom: Sparse reward",
+                    "left: Off-policy",
+                    "Sampling distribution",
+                    "right: On-policy"
+                ],
+                "scatter_items": [
+                    "SFT",
+                    "OPD",
+                    "DPO",
+                    "GRPO",
+                    "RLHF"
+                ]
+            },
+            "description": "概念关系图，展示不同后训练方法在监督密度与采样分布维度上的位置关系，以及它们之间的演化路径和分类（监督/强化学习/蒸馏/偏好优化）",
+            "_run_id": 0,
+            "votes": 1
+        },
+        {
+            "id": 2,
+            "type": "box",
+            "bbox": [
+                58,
+                176,
+                983,
+                402
+            ],
+            "label": "Unified Optimization Objective\nπ* = argmax E[r(x)] − β KL(π || π_ref)\nπ → trained policy (student model)  r(x) → reward function (method-specific)  π_ref → reference model  β → KL regularization strength\nModern post-training methods mainly differ in reward modeling rather than optimization algorithms",
+            "center": [
+                520,
+                289
+            ],
+            "style": {
+                "shape": "rectangle",
+                "fill_color": "#E5F1FD",
+                "text_alignment": "center",
+                "drawing_instruction": "浅蓝色圆角矩形框，包含优化目标公式及说明文字"
+            },
+            "structure": {
+                "rows": 0,
+                "cols": 0,
+                "cells": [],
+                "axis_labels": [],
+                "scatter_items": []
+            },
+            "description": "展示现代LLM后训练方法的统一优化目标公式及其关键参数解释",
+            "_run_id": 0,
+            "votes": 1
+        },
+        {
+            "id": 3,
+            "type": "table",
+            "bbox": [
+                60,
+                409,
+                480,
+                738
+            ],
+            "label": "Method Instantiations\nMethod\tSampling\tReward\tKL Ref\tKey Property\nSFT\tTeacher\tToken target\tBase\tImitation learning\nRLHF\tStudent\tReward model\tBase\tHuman alignment\nDPO\tStudent\tPreference reward\tBase\tRL-free alignment\nGRPO\tStudent\tRelative reward\tBase\tComparative RL\nOPD\tStudent\tTeacher logprob\tTeacher/Base\tOn-policy KD",
+            "center": [
+                273,
+                579
+            ],
+            "style": {
+                "shape": "rectangle",
+                "fill_color": "#FFFFFF",
+                "text_alignment": "left",
+                "drawing_instruction": "表格结构，包含5列：Method、Sampling、Reward、KL Ref、Key Property，共5行数据（含表头）"
+            },
+            "structure": {
+                "rows": 6,
+                "cols": 5,
+                "cells": [
+                    [
+                        "Method",
+                        "Sampling",
+                        "Reward",
+                        "KL Ref",
+                        "Key Property"
+                    ],
+                    [
+                        "SFT",
+                        "Teacher",
+                        "Token target",
+                        "Base",
+                        "Imitation learning"
+                    ],
+                    [
+                        "RLHF",
+                        "Student",
+                        "Reward model",
+                        "Base",
+                        "Human alignment"
+                    ],
+                    [
+                        "DPO",
+                        "Student",
+                        "Preference reward",
+                        "Base",
+                        "RL-free alignment"
+                    ],
+                    [
+                        "GRPO",
+                        "Student",
+                        "Relative reward",
+                        "Base",
+                        "Comparative RL"
+                    ],
+                    [
+                        "OPD",
+                        "Student",
+                        "Teacher logprob",
+                        "Teacher/Base",
+                        "On-policy KD"
+                    ]
+                ],
+                "axis_labels": [],
+                "scatter_items": []
+            },
+            "description": "列出五种现代LLM后训练方法（SFT、RLHF、DPO、GRPO、OPD）的采样方式、奖励定义、KL参考模型及关键特性",
+            "_run_id": 0,
+            "votes": 1
+        },
+        {
+            "id": 4,
+            "type": "text",
+            "bbox": [
+                63,
+                900,
+                978,
+                987
+            ],
+            "label": "A Unified View of Modern LLM Post-Training\nKL-Regularized Reward Optimization Framework\nUnifying SFT · RLHF · DPO · GRPO · OPD",
+            "center": [
+                500,
+                83
+            ],
+            "style": {
+                "shape": "none",
+                "fill_color": "#E5EEF5",
+                "text_alignment": "center",
+                "drawing_instruction": "主标题区域，居中显示，包含论文核心框架名称及方法列表"
+            },
+            "structure": {
+                "rows": 3,
+                "cols": 1,
+                "cells": [
+                    [
+                        "A Unified View of Modern LLM Post-Training"
+                    ],
+                    [
+                        "KL-Regularized Reward Optimization Framework"
+                    ],
+                    [
+                        "Unifying SFT · RLHF · DPO · GRPO · OPD"
+                    ]
+                ],
+                "axis_labels": [],
+                "scatter_items": []
+            },
+            "description": "论文主标题与副标题，概括全文核心内容——现代LLM后训练方法的统一KL正则化奖励优化框架",
+            "_run_id": 0,
+            "votes": 1
+        },
+        {
+            "id": 5,
+            "type": "text",
+            "bbox": [
+                269,
+                60,
+                739,
+                116
+            ],
+            "label": "All modern LLM post-training methods can be viewed as KL-regularized reward optimization with different reward definitions.\nEvolution: Imitation → Reward Modeling → Distribution Shaping",
+            "center": [
+                520,
+                934
+            ],
+            "style": {
+                "shape": "none",
+                "fill_color": "#F4F5F7",
+                "text_alignment": "center",
+                "drawing_instruction": "底部总结性文字，强调所有方法可统一为KL正则化奖励优化，并描述其演进路径"
+            },
+            "structure": {
+                "rows": 2,
+                "cols": 1,
+                "cells": [
+                    [
+                        "All modern LLM post-training methods can be viewed as KL-regularized reward optimization with different reward definitions."
+                    ],
+                    [
+                        "Evolution: Imitation → Reward Modeling → Distribution Shaping"
+                    ]
+                ],
+                "axis_labels": [],
+                "scatter_items": []
+            },
+            "description": "论文结论性陈述，指出所有现代LLM后训练方法均可视为KL正则化奖励优化，并归纳其发展脉络",
+            "_run_id": 0,
+            "votes": 1
+        },
+        {
+            "id": 6,
+            "type": "box",
+            "bbox": [
+                58,
+                758,
+                480,
+                873
+            ],
+            "label": "Reward Definitions\nSFT: r(x)=1 (x=y_teacher), RLHF: r(x)=R_RM(x), DPO: r(x)=β log(P(chosen)/P(rejected)), GRPO: r(x)=group relative score, OPD: r(x)=log P_teacher(x)",
+            "center": [
+                273,
+                822
+            ],
+            "style": {
+                "shape": "rectangle",
+                "fill_color": "#EEF3F7",
+                "text_alignment": "left",
+                "drawing_instruction": "浅灰色背景矩形框，包含各方法的奖励函数定义公式"
+            },
+            "structure": {
+                "rows": 1,
+                "cols": 1,
+                "cells": [
+                    [
+                        "Reward Definitions\nSFT: r(x)=1 (x=y_teacher), RLHF: r(x)=R_RM(x), DPO: r(x)=β log(P(chosen)/P(rejected)), GRPO: r(x)=group relative score, OPD: r(x)=log P_teacher(x)"
+                    ]
+                ],
+                "axis_labels": [],
+                "scatter_items": []
+            },
+            "description": "详细说明每种后训练方法所使用的奖励函数定义",
+            "_run_id": 0,
+            "votes": 1
+        },
+        {
+            "id": 7,
+            "type": "box",
+            "bbox": [
+                820,
+                38,
+                977,
+                136
+            ],
+            "label": "Alignment Landscape\n↑",
+            "center": [
+                901,
+                83
+            ],
+            "style": {
+                "shape": "rectangle",
+                "fill_color": "#494226",
+                "text_alignment": "center",
+                "drawing_instruction": "右上角黄色边框矩形框，内含“Alignment Landscape”标题及上升趋势图标"
+            },
+            "structure": {
+                "rows": 2,
+                "cols": 1,
+                "cells": [
+                    [
+                        "Alignment Landscape"
+                    ],
+                    [
+                        "↑"
+                    ]
+                ],
+                "axis_labels": [],
+                "scatter_items": []
+            },
+            "description": "表示对齐演进趋势的视觉标签，配合图表中的概念关系图",
+            "_run_id": 0,
+            "votes": 1
+        },
+        {
+            "id": 8,
+            "type": "text",
+            "bbox": [
+                30,
+                38,
+                162,
+                116
+            ],
+            "label": "POST-TRAINING THEORY",
+            "center": [
+                99,
+                83
+            ],
+            "style": {
+                "shape": "none",
+                "fill_color": "#053052",
+                "text_alignment": "left",
+                "drawing_instruction": "左上角标题文字，蓝色字体，无背景框"
+            },
+            "structure": {
+                "rows": 2,
+                "cols": 1,
+                "cells": [
+                    [
+                        "POST-TRAINING"
+                    ],
+                    [
+                        "THEORY"
+                    ]
+                ],
+                "axis_labels": [],
+                "scatter_items": []
+            },
+            "description": "论文主题区域的左侧副标题，标识研究领域为“后训练理论”",
+            "_run_id": 0,
+            "votes": 1
+        },
+        {
+            "id": 9,
+            "type": "line",
+            "bbox": [
+                650,
+                478,
+                775,
+                548
+            ],
+            "label": "On-policy distillation",
+            "center": [
+                712,
+                513
+            ],
+            "style": {
+                "shape": "none",
+                "fill_color": "#FFFFFF",
+                "text_alignment": "center",
+                "drawing_instruction": "从SFT指向OPD的黑色箭头，标注“On-policy distillation”，表示概念演化路径"
+            },
+            "structure": {
+                "rows": 0,
+                "cols": 0,
+                "cells": [],
+                "axis_labels": [],
+                "scatter_items": []
+            },
+            "description": "连接SFT与OPD的箭头，标注“On-policy distillation”，表示从监督微调到在线策略蒸馏的演化关系",
+            "_run_id": 0,
+            "votes": 1
+        },
+        {
+            "id": 10,
+            "type": "line",
+            "bbox": [
+                800,
+                538,
+                875,
+                608
+            ],
+            "label": "RL simplification",
+            "center": [
+                837,
+                573
+            ],
+            "style": {
+                "shape": "none",
+                "fill_color": "#FFFFFF",
+                "text_alignment": "center",
+                "drawing_instruction": "从DPO指向GRPO的黑色箭头，标注“RL simplification”，表示强化学习简化路径"
+            },
+            "structure": {
+                "rows": 0,
+                "cols": 0,
+                "cells": [],
+                "axis_labels": [],
+                "scatter_items": []
+            },
+            "description": "连接DPO与GRPO的箭头，标注“RL simplification”，表示偏好优化向强化学习简化的演化方向",
+            "_run_id": 0,
+            "votes": 1
+        },
+        {
+            "id": 11,
+            "type": "line",
+            "bbox": [
+                725,
+                698,
+                800,
+                768
+            ],
+            "label": "Reward restructuring",
+            "center": [
+                762,
+                733
+            ],
+            "style": {
+                "shape": "none",
+                "fill_color": "#FFFFFF",
+                "text_alignment": "center",
+                "drawing_instruction": "从RLHF指向GRPO的黑色箭头，标注“Reward restructuring”，表示奖励重构路径"
+            },
+            "structure": {
+                "rows": 0,
+                "cols": 0,
+                "cells": [],
+                "axis_labels": [],
+                "scatter_items": []
+            },
+            "description": "连接RLHF与GRPO的箭头，标注“Reward restructuring”，表示从人类反馈到奖励重构的演化路径",
+            "_run_id": 0,
+            "votes": 1
+        },
+        {
+            "id": 12,
+            "type": "icon",
+            "bbox": [
+                649,
+                478,
+                693,
+                536
+            ],
+            "label": "SFT",
+            "center": [
+                675,
+                513
+            ],
+            "style": {
+                "shape": "circle",
+                "fill_color": "#FEFEFE",
+                "text_alignment": "center",
+                "drawing_instruction": "蓝色圆形节点，内部标注'SFT'，代表监督微调方法"
+            },
+            "structure": {
+                "rows": 1,
+                "cols": 1,
+                "cells": [
+                    [
+                        "SFT"
+                    ]
+                ],
+                "axis_labels": [],
+                "scatter_items": []
+            },
+            "description": "概念关系图中的蓝色圆形节点，代表SFT方法，位于高监督密度、低采样分布区域",
+            "_run_id": 0,
+            "votes": 1,
+            "_parent_type": "coordinate_chart"
+        },
+        {
+            "id": 13,
+            "type": "icon",
+            "bbox": [
+                800,
+                478,
+                850,
+                548
+            ],
+            "label": "OPD",
+            "center": [
+                825,
+                513
+            ],
+            "style": {
+                "shape": "circle",
+                "fill_color": "#FFFFFF",
+                "text_alignment": "center",
+                "drawing_instruction": "绿色圆形节点，内部标注'OPD'，代表在线策略知识蒸馏方法"
+            },
+            "structure": {
+                "rows": 1,
+                "cols": 1,
+                "cells": [
+                    [
+                        "OPD"
+                    ]
+                ],
+                "axis_labels": [],
+                "scatter_items": []
+            },
+            "description": "概念关系图中的绿色圆形节点，代表OPD方法，位于高监督密度、高采样分布区域",
+            "_run_id": 0,
+            "votes": 1,
+            "_parent_type": "coordinate_chart"
+        },
+        {
+            "id": 14,
+            "type": "icon",
+            "bbox": [
+                875,
+                538,
+                925,
+                608
+            ],
+            "label": "DPO",
+            "center": [
+                900,
+                573
+            ],
+            "style": {
+                "shape": "circle",
+                "fill_color": "#FFFFFF",
+                "text_alignment": "center",
+                "drawing_instruction": "紫色圆形节点，内部标注'DPO'，代表偏好优化方法"
+            },
+            "structure": {
+                "rows": 1,
+                "cols": 1,
+                "cells": [
+                    [
+                        "DPO"
+                    ]
+                ],
+                "axis_labels": [],
+                "scatter_items": []
+            },
+            "description": "概念关系图中的紫色圆形节点，代表DPO方法，位于中等监督密度、高采样分布区域",
+            "_run_id": 0,
+            "votes": 1,
+            "_parent_type": "coordinate_chart"
+        },
+        {
+            "id": 15,
+            "type": "icon",
+            "bbox": [
+                800,
+                618,
+                850,
+                688
+            ],
+            "label": "GRPO",
+            "center": [
+                825,
+                653
+            ],
+            "style": {
+                "shape": "circle",
+                "fill_color": "#FFFFFF",
+                "text_alignment": "center",
+                "drawing_instruction": "红色圆形节点，内部标注'GRPO'，代表组相对奖励优化方法"
+            },
+            "structure": {
+                "rows": 1,
+                "cols": 1,
+                "cells": [
+                    [
+                        "GRPO"
+                    ]
+                ],
+                "axis_labels": [],
+                "scatter_items": []
+            },
+            "description": "概念关系图中的红色圆形节点，代表GRPO方法，位于中等监督密度、高采样分布区域",
+            "_run_id": 0,
+            "votes": 1,
+            "_parent_type": "coordinate_chart"
+        },
+        {
+            "id": 16,
+            "type": "icon",
+            "bbox": [
+                725,
+                698,
+                775,
+                768
+            ],
+            "label": "RLHF",
+            "center": [
+                750,
+                733
+            ],
+            "style": {
+                "shape": "circle",
+                "fill_color": "#FFFFFF",
+                "text_alignment": "center",
+                "drawing_instruction": "橙色圆形节点，内部标注'RLHF'，代表强化学习人类反馈方法"
+            },
+            "structure": {
+                "rows": 1,
+                "cols": 1,
+                "cells": [
+                    [
+                        "RLHF"
+                    ]
+                ],
+                "axis_labels": [],
+                "scatter_items": []
+            },
+            "description": "概念关系图中的橙色圆形节点，代表RLHF方法，位于低监督密度、高采样分布区域",
+            "_run_id": 0,
+            "votes": 1,
+            "_parent_type": "coordinate_chart"
+        }
+    ],
+    "config": {
+        "n_runs": 1,
+        "model": "qwen3-vl-flash-2025-10-15"
+    }
+}

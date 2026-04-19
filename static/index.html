@@ -1,0 +1,608 @@
+	<!DOCTYPE html>
+	<html lang="zh-CN">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>AI 结构化布局与绘制工作台</title>
+	    <style>
+	        body { margin: 0; font-family: 'Segoe UI', sans-serif; display: flex; height: 100vh; background: #f0f2f5; color: #333; }
+	        .left-panel { width: 45%; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+			.right-panel { 
+						width: 55%; 
+						background: #e4e6eb; 
+						display: flex; 
+						flex-direction: column; /* 改为column */
+						padding: 20px; 
+						box-sizing: border-box;
+						overflow: hidden; /* 防止整体页面滚动 */
+						}
+	        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+	        h3 { margin-top: 0; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; color: #1a1a1a; font-size: 16px; }
+	        input, textarea, button { width: 100%; margin-bottom: 10px; padding: 10px; box-sizing: border-box; border-radius: 6px; border: 1px solid #ddd; font-size: 14px; }
+	        input:focus, textarea:focus { outline: none; border-color: #007AFF; }
+	        button { background: #007AFF; color: white; border: none; cursor: pointer; font-weight: 600; transition: background 0.2s; }
+	        button:hover { background: #0056b3; }
+	        button:disabled { background: #b0d4ff; cursor: not-allowed; }
+	        .row { display: flex; gap: 10px; }
+	        .row > * { flex: 1; }
+	        /* 交互画布容器 */
+	        .canvas-container { position: relative; width: 100%; background: #fafafa; border: 2px dashed #ccc; border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
+	        /* 布局元素 DOM */
+	        .bbox-element { position: absolute; border: 2px solid; background: rgba(0,122,255,0.05); cursor: move; box-sizing: border-box; transition: box-shadow 0.2s; display: flex; align-items: flex-start; justify-content: flex-start; padding: 4px; overflow: hidden; font-size: 11px; line-height: 1.3; color: #333; }
+	        .bbox-element.selected { border-width: 3px; box-shadow: 0 0 15px rgba(255, 59, 48, 0.6); z-index: 10; }
+	        .bbox-element .label-preview { pointer-events: none; word-break: break-all; font-weight: bold;}
+	        .bbox-element .instr-preview { pointer-events: none; word-break: break-all; color: #666; margin-top: 4px; font-style: italic; font-size: 10px;}
+				/* Resize 拖拽手柄样式 */
+			.resize-handle {
+				position: absolute;
+				width: 10px;
+				height: 10px;
+				background: #007AFF;
+				border: 1px solid white;
+				border-radius: 50%;
+				z-index: 20;
+				box-shadow: 0 0 3px rgba(0,0,0,0.3);
+			}
+			.handle-nw { top: -5px; left: -5px; cursor: nw-resize; }
+			.handle-n  { top: -5px; left: calc(50% - 5px); cursor: n-resize; }
+			.handle-ne { top: -5px; right: -5px; cursor: ne-resize; }
+			.handle-e  { top: calc(50% - 5px); right: -5px; cursor: e-resize; }
+			.handle-se { bottom: -5px; right: -5px; cursor: se-resize; }
+			.handle-s  { bottom: -5px; left: calc(50% - 5px); cursor: s-resize; }
+			.handle-sw { bottom: -5px; left: -5px; cursor: sw-resize; }
+			.handle-w  { top: calc(50% - 5px); left: -5px; cursor: w-resize; }
+	        /* 右侧预览 */
+	        #output-image { max-width: 100%; max-height: 90%; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 8px; display: none; }
+			/* 多图画廊样式 */
+			.gallery-container {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+				gap: 15px;
+				width: 100%;
+				flex: 1; /* 自动填充剩余高度 */
+				min-height: 0; /* 关键：防止flex子项溢出 */
+				overflow-y: auto;
+				padding: 10px;
+				align-content: start; /* 图片少时靠上排列，不居中拉伸 */
+			}
+			
+			/* 修改图片样式：限制最大高度，保持比例不变形 */
+			.gallery-item img {
+				width: 100%;
+				height: auto;
+				max-height: 350px; /* 限制最高高度，避免长图撑爆容器 */
+				object-fit: contain; /* 保持比例，不裁剪 */
+				display: block;
+				cursor: pointer;
+				background: #f0f0f0; /* contain留白时的背景色 */
+			}
+			.gallery-item:hover {
+				border-color: #007AFF;
+			}
+			.gallery-item .img-label {
+				padding: 8px;
+				font-size: 12px;
+				color: #333;
+				text-align: center;
+				background: #f8f9fa;
+				font-weight: bold;
+			}
+	    </style>
+	</head>
+	<body>
+	    <div class="left-panel">
+			<!-- Step 1 -->
+			<div class="card" style="background: #fffbe6; border: 1px solid #ffe58f;">
+				<h3 style="margin:0; border:0; padding:0; font-size: 14px; color: #d48806;">🔑 全局配置：API 密钥</h3>
+				<input type="password" id="apiKeyInput" placeholder="请输入您的 DASHSCOPE_API_KEY (API_KEY)" style="margin-top: 10px; margin-bottom: 0; font-size: 12px;">
+			</div>
+			<!-- Step 1: 双栏布局 -->
+			<div class="card">
+				<h3>1. 布局提取 / 生成</h3>
+				<div style="display: flex; gap: 20px;">
+					<!-- 左侧：原图提取 -->
+					<div style="flex: 1; border-right: 1px solid #eee; padding-right: 15px;">
+						<h4 style="font-size:14px; color:#555; margin-top:0;">📷 基于参考图提取</h4>
+						<input type="hidden" id="serverImagePath" value="">
+						<div style="margin-bottom: 10px; padding: 10px; background: #f8f9fa; border-radius: 6px; border: 1px dashed #ddd;">
+							<input type="file" id="imageFile" accept="image/png, image/jpeg, image/webp" style="border:none; padding:0; width:auto; font-size:12px;">
+						</div>
+						<div class="row">
+							<div>
+								<label style="font-size:11px; color:#666;">n_runs</label>
+								<input type="number" id="nRuns" value="5" style="padding: 6px;">
+							</div>
+							<div>
+								<label style="font-size:11px; color:#666;">iou_threshold</label>
+								<input type="number" id="iouThreshold" value="0.55" step="0.05" style="padding: 6px;">
+							</div>
+						</div>
+						<button id="btnAnalyze" onclick="analyzeLayout()" style="font-size: 13px; padding: 8px;background: #5856D6 ">🚀 分析提取</button>
+					</div>
+					<!-- 右侧：文本生成 PPT -->
+					<div style="flex: 1; padding-left: 5px;">
+						<h4 style="font-size:14px; color:#555; margin-top:0;">📝 基于文本生成 PPT</h4>
+						<textarea id="pptUserInput" rows="4" placeholder="输入PPT需求，如：做一个RLHF vs DPO的对比PPT，用表格+坐标系展示差异" style="font-size: 12px; resize: vertical;"></textarea>
+						<button id="btnGenPPT" onclick="generatePPTLayout()" style="font-size: 13px; padding: 8px; background: #5856D6;">✨ AI 生成布局</button>
+					</div>
+				</div>
+			</div>
+	        <!-- Step 2 -->
+	        <div class="card">
+	            <h3>2. 框架布局交互编辑</h3>
+	            <input type="text" id="jsonPath" placeholder="JSON 路径 (如 assets/layout.json)" value="assets/layout.json">
+	            <button onclick="loadLayout()">📂 加载并渲染布局</button>
+	            <!-- 画布高度根据图片比例自适应，这里设个固定高度 -->
+	            <div class="canvas-container" id="layoutCanvas" style="height: 450px;"></div>
+	            <div class="card" style="background: #f9f9f9; border: 1px solid #eee;">
+	                <h3 style="font-size: 15px; color: #d63031;">选中元素属性 (点击画布框体)</h3>
+	                <input type="hidden" id="editId">
+	                <label style="font-size:12px; font-weight:bold;">Label:</label>
+	                <textarea id="editLabel" rows="3" placeholder="点击元素加载..."></textarea>
+	                <label style="font-size:12px; font-weight:bold;">Drawing Instruction:</label>
+	                <textarea id="editInstruction" rows="3" placeholder="点击元素加载..."></textarea>
+	                <button onclick="savePropertyChanges()" style="background: #34C759;">💾 确认修改并更新 JSON</button>
+	            </div>
+	        </div>
+	        <!-- Step 3 -->
+			<!-- Step 3 -->
+			<!-- Step 3 -->
+			<div class="card">
+				<h3>3. 绘制生成</h3>
+				<div class="row" style="margin-bottom: 10px;">
+					<div>
+						<label style="font-size:12px; color:#666;">图像宽度</label>
+						<input type="number" id="imgWidth" value="1024">
+					</div>
+					<div>
+						<label style="font-size:12px; color:#666;">图像高度</label>
+						<input type="number" id="imgHeight" value="768">
+					</div>
+				</div>
+				<div class="row">
+					<div style="flex: 1;">
+						<label style="font-size:12px; color:#666;">生成数量 (1-6)</label>
+						<input type="number" id="numImages" value="4" min="1" max="6">
+					</div>
+					<div style="display: flex; align-items: flex-end;">
+						<button id="btnDraw" onclick="drawImage()" style="background: #FF9500; height: 42px;">🎨 批量绘制图像</button>
+					</div>
+				</div>
+			</div>
+	    </div>
+		<div class="right-panel">
+			<h2 style="color: #888; margin-bottom: 20px; width: 100%; text-align: center;">生成结果预览</h2>
+			<!-- 👇 将原来的 img 替换为这个 gallery 容器 👇 -->
+			<div id="output-gallery" class="gallery-container">
+				<div style="color: #aaa; text-align: center; grid-column: 1/-1;">等待生成...</div>
+			</div>
+		</div>
+	    <script>
+	        let layoutData = null;
+	        let selectedElemId = null;
+	        const BASE_URL = "";
+	        const BASE_COORD = 1000;
+			let canvasScale = 1; 
+			// ================= Step 1: 分析布局 =================
+			// ================= Step 1 补充: 文本生成 PPT 布局 =================
+			async function generatePPTLayout() {
+				const btn = document.getElementById('btnGenPPT');
+				const userInput = document.getElementById('pptUserInput').value;
+				if (!userInput.trim()) {
+					alert("请先输入 PPT 布局的需求描述！");
+					return;
+				}
+				btn.innerText = '⏳ AI 生成中...';
+				btn.disabled = true;
+				try {
+					const headers = { 'Content-Type': 'application/json' };
+					const apiKey = document.getElementById('apiKeyInput').value.trim();
+					if (apiKey) headers['X-API-Key'] = apiKey;
+					const res = await fetch(`${BASE_URL}/api/generate_ppt_layout`, {
+						method: 'POST',
+						headers: headers, // 👈 传入请求头
+						body: JSON.stringify({ user_input: userInput })
+					});
+					const data = await res.json();
+					if (data.success) {
+						alert('✅ ' + data.msg);
+						// 清空左侧参考图路径，更新 JSON 路径和尺寸
+						document.getElementById('serverImagePath').value = "";
+						document.getElementById('jsonPath').value = data.json_path;
+						document.getElementById('imgWidth').value = data.width;
+						document.getElementById('imgHeight').value = data.height;
+						// 自动加载到画布
+						loadLayout();
+					} else {
+						alert('❌ ' + data.msg);
+					}
+				} catch (e) {
+					alert('请求失败，请确保后端已启动: ' + e.message);
+				} finally {
+					btn.innerText = '✨ AI 生成布局';
+					btn.disabled = false;
+				}
+			}
+
+			async function analyzeLayout() {
+				const btn = document.getElementById('btnAnalyze');
+				const fileInput = document.getElementById('imageFile');
+				if (!fileInput.files[0]) {
+					alert("请先选择要上传的图片！");
+					return;
+				}
+				btn.innerText = '⏳ 分析中，多次采样需等待...';
+				btn.disabled = true;
+				try {
+					const formData = new FormData();
+					formData.append("image_file", fileInput.files[0]);
+					formData.append("n_runs", document.getElementById('nRuns').value);
+					formData.append("iou_threshold", document.getElementById('iouThreshold').value);
+						        // 👇 新增：构建请求头
+					const headers = {};
+					const apiKey = document.getElementById('apiKeyInput').value.trim();
+					if (apiKey) headers['X-API-Key'] = apiKey;
+					const res = await fetch(`${BASE_URL}/api/analyze_layout`, {
+						method: 'POST',
+						headers: headers, // 👈 传入请求头
+						body: formData
+					});
+					const data = await res.json();
+					if (data.success) {
+						alert('✅ ' + data.msg);
+						// 👇 将后端返回的实际路径存入隐藏域，供 Step 3 绘制时使用
+						document.getElementById('serverImagePath').value = data.image_path; 
+						document.getElementById('jsonPath').value = data.json_path;
+						loadLayout();
+						if (data.width && data.height) {
+							document.getElementById('imgWidth').value = data.width;
+							document.getElementById('imgHeight').value = data.height;
+						}
+					} else {
+						alert('❌ ' + data.msg);
+					}
+				} catch (e) {
+					alert('请求失败，请确保后端已启动: ' + e.message);
+				} finally {
+					btn.innerText = '🚀 开始提取布局';
+					btn.disabled = false;
+				}
+			}
+	        // ================= Step 2: 加载与渲染 =================
+	        async function loadLayout() {
+	            const path = document.getElementById('jsonPath').value;
+	            try {
+	                const res = await fetch(`${BASE_URL}/${path}`);
+	                layoutData = await res.json();
+	                renderCanvas();
+	            } catch (e) {
+	                alert('加载 JSON 失败: ' + e.message);
+	            }
+	        }
+	        function renderCanvas() {
+	            const canvas = document.getElementById('layoutCanvas');
+	            canvas.innerHTML = ''; 
+	            if (!layoutData || !layoutData.elements) return;
+	            const canvasW = canvas.clientWidth;
+	            const canvasH = canvas.clientHeight;
+	            layoutData.elements.forEach(elem => {
+	                if (!elem.bbox || elem.bbox.length !== 4) return;
+	                const [x1, y1, x2, y2] = elem.bbox;
+	                const left = (Math.min(x1, x2) / BASE_COORD) * canvasW;
+	                const top = (Math.min(y1, y2) / BASE_COORD) * canvasH;
+	                const width = ((Math.max(x1, x2) - Math.min(x1, x2)) / BASE_COORD) * canvasW;
+	                const height = ((Math.max(y1, y2) - Math.min(y1, y2)) / BASE_COORD) * canvasH;
+	                const div = document.createElement('div');
+	                div.className = 'bbox-element';
+	                div.id = `elem-${elem.id}`;
+	                div.style.left = `${left}px`;
+	                div.style.top = `${top}px`;
+	                div.style.width = `${width}px`;
+	                div.style.height = `${height}px`;
+	                const colorMap = { box: "#FF3B30", text: "#34C759", line: "#007AFF", coordinate_chart: "#AF52DE", table: "#FF9500" };
+	                div.style.borderColor = colorMap[elem.type] || colorMap.box;
+	                // 标签预览
+	                const labelDiv = document.createElement('div');
+	                labelDiv.className = 'label-preview';
+	                labelDiv.innerText = elem.label || 'Empty';
+	                div.appendChild(labelDiv);
+	                // 绘制建议预览 (如果有)
+	                const instrDiv = document.createElement('div');
+	                instrDiv.className = 'instr-preview';
+	                instrDiv.innerText = elem.style?.drawing_instruction || '';
+	                div.appendChild(instrDiv);
+	                div.onmousedown = (e) => {
+	                    e.stopPropagation();
+	                    selectElement(elem.id);
+	                    initDrag(e, div, elem);
+	                };
+	                canvas.appendChild(div);
+	            });
+	        }
+			function selectElement(id) {
+				// 移除旧选中的样式和手柄
+				document.querySelectorAll('.bbox-element.selected').forEach(el => {
+					el.classList.remove('selected');
+					el.querySelectorAll('.resize-handle').forEach(h => h.remove());
+				});
+				selectedElemId = id;
+				const div = document.getElementById(`elem-${id}`);
+				div.classList.add('selected');
+				// 👇 新增：为选中元素添加 8 个方向的 Resize 手柄
+				const directions = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'];
+				directions.forEach(dir => {
+					const handle = document.createElement('div');
+					handle.className = `resize-handle handle-${dir}`;
+					handle.dataset.dir = dir;
+					// 手柄的 mousedown 事件，阻止冒泡以免触发整体移动
+					handle.onmousedown = (e) => {
+						e.stopPropagation(); 
+						e.preventDefault();
+						initResize(e, div, dir); // 触发 Resize 逻辑
+					};
+					div.appendChild(handle);
+				});
+				// 将数据填充到属性面板
+				const elem = layoutData.elements.find(e => e.id === id);
+				if (elem) {
+					document.getElementById('editId').value = elem.id;
+					document.getElementById('editLabel').value = elem.label || '';
+					document.getElementById('editInstruction').value = elem.style?.drawing_instruction || '';
+				}
+			}
+	        // ================= 拖拽交互逻辑 =================
+	        function initDrag(e, div, elem) {
+	            const canvas = document.getElementById('layoutCanvas');
+	            let startX = e.clientX, startY = e.clientY;
+	            let initialLeft = div.offsetLeft, initialTop = div.offsetTop;
+	            const mouseMoveHandler = (moveEvent) => {
+	                const dx = moveEvent.clientX - startX;
+	                const dy = moveEvent.clientY - startY;
+	                let newLeft = Math.max(0, Math.min(initialLeft + dx, canvas.clientWidth - div.clientWidth));
+	                let newTop = Math.max(0, Math.min(initialTop + dy, canvas.clientHeight - div.clientHeight));
+	                div.style.left = `${newLeft}px`;
+	                div.style.top = `${newTop}px`;
+	            };
+	            const mouseUpHandler = () => {
+	                const canvasW = canvas.clientWidth;
+	                const canvasH = canvas.clientHeight;
+	                const finalLeft = div.offsetLeft;
+	                const finalTop = div.offsetTop;
+	                const width = div.clientWidth;
+	                const height = div.clientHeight;
+	                // 反算 1000 坐标系
+	                const x1 = Math.round((finalLeft / canvasW) * BASE_COORD);
+	                const y1 = Math.round((finalTop / canvasH) * BASE_COORD);
+	                const x2 = Math.round(((finalLeft + width) / canvasW) * BASE_COORD);
+	                const y2 = Math.round(((finalTop + height) / canvasH) * BASE_COORD);
+	                elem.bbox = [x1, y1, x2, y2];
+	                console.log(`更新元素 ${elem.id} bbox:`, elem.bbox);
+	                document.removeEventListener('mousemove', mouseMoveHandler);
+	                document.removeEventListener('mouseup', mouseUpHandler);
+	            };
+	            document.addEventListener('mousemove', mouseMoveHandler);
+	            document.addEventListener('mouseup', mouseUpHandler);
+	        }
+			// ================= 元素 Resize 交互逻辑 =================
+			function initResize(e, div, direction) {
+				const canvas = document.getElementById('layoutCanvas');
+				let startX = e.clientX;
+				let startY = e.clientY;
+				let initialLeft = div.offsetLeft;
+				let initialTop = div.offsetTop;
+				let initialWidth = div.offsetWidth;
+				let initialHeight = div.offsetHeight;
+				const mouseMoveHandler = (moveEvent) => {
+					// 屏幕位移除以画布缩放比例，换算为画布内部坐标位移
+					const dx = (moveEvent.clientX - startX) / canvasScale;
+					const dy = (moveEvent.clientY - startY) / canvasScale;
+					let newLeft = initialLeft;
+					let newTop = initialTop;
+					let newWidth = initialWidth;
+					let newHeight = initialHeight;
+					// 根据拖拽方向计算新尺寸和位置
+					if (direction.includes('e')) { newWidth = initialWidth + dx; }
+					if (direction.includes('w')) { newWidth = initialWidth - dx; newLeft = initialLeft + dx; }
+					if (direction.includes('s')) { newHeight = initialHeight + dy; }
+					if (direction.includes('n')) { newHeight = initialHeight - dy; newTop = initialTop + dy; }
+					// 边界限制：最小宽高设为 20px，防止缩成负数
+					if (newWidth < 20) { newWidth = 20; if(direction.includes('w')) newLeft = initialLeft + initialWidth - 20; }
+					if (newHeight < 20) { newHeight = 20; if(direction.includes('n')) newTop = initialTop + initialHeight - 20; }
+					div.style.left = `${newLeft}px`;
+					div.style.top = `${newTop}px`;
+					div.style.width = `${newWidth}px`;
+					div.style.height = `${newHeight}px`;
+				};
+				const mouseUpHandler = () => {
+					// 拖拽结束，反算并更新 elem.bbox
+					const canvasW = canvas.clientWidth;
+					const canvasH = canvas.clientHeight;
+					const finalLeft = div.offsetLeft;
+					const finalTop = div.offsetTop;
+					const width = div.offsetWidth;
+					const height = div.offsetHeight;
+					// DOM 像素转 1000 坐标系
+					const x1 = Math.round((finalLeft / canvasW) * BASE_COORD);
+					const y1 = Math.round((finalTop / canvasH) * BASE_COORD);
+					const x2 = Math.round(((finalLeft + width) / canvasW) * BASE_COORD);
+					const y2 = Math.round(((finalTop + height) / canvasH) * BASE_COORD);
+					const elem = layoutData.elements.find(el => el.id === selectedElemId);
+					if (elem) {
+						elem.bbox = [x1, y1, x2, y2];
+						console.log(`Resize 元素 ${elem.id} 的 bbox:`, elem.bbox);
+					}
+					document.removeEventListener('mousemove', mouseMoveHandler);
+					document.removeEventListener('mouseup', mouseUpHandler);
+				};
+				document.addEventListener('mousemove', mouseMoveHandler);
+				document.addEventListener('mouseup', mouseUpHandler);
+			}
+
+
+			// ================= 删除选中元素 =================
+			function deleteSelectedElement() {
+				if (!selectedElemId || !layoutData) return;
+				
+				// 弹窗确认，防止误触
+				const elem = layoutData.elements.find(e => e.id === selectedElemId);
+				if (!elem) return;
+				const confirmDelete = confirm(`确定要删除元素 [${elem.label || elem.id}] 吗？`);
+				if (!confirmDelete) return;
+
+				// 1. 从数据源中移除该元素
+				layoutData.elements = layoutData.elements.filter(e => e.id !== selectedElemId);
+				
+				// 2. 从画布 DOM 中移除该元素
+				const div = document.getElementById(`elem-${selectedElemId}`);
+				if (div) div.remove();
+				
+				// 3. 清空属性面板
+				selectedElemId = null;
+				document.getElementById('editId').value = '';
+				document.getElementById('editLabel').value = '';
+				document.getElementById('editInstruction').value = '';
+				
+				// 4. 自动保存变更到后端 JSON
+				saveLayoutToServer();
+			}
+			// 监听键盘 Delete / Backspace 删除元素
+			document.addEventListener('keydown', (e) => {
+				// 如果焦点在输入框/文本域内，不拦截删除键，以免影响正常文本编辑
+				const tag = e.target.tagName.toLowerCase();
+				if (tag === 'input' || tag === 'textarea') return; 
+
+				if (e.key === 'Delete' || e.key === 'Backspace') {
+					e.preventDefault(); // 阻止浏览器后退
+					deleteSelectedElement();
+				}
+			});
+			// 封装保存 JSON 到服务端的请求（供删除和修改复用）
+			async function saveLayoutToServer() {
+				if (!layoutData) return;
+				try {
+					const res = await fetch(`${BASE_URL}/api/save_json`, {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({
+							json_path: document.getElementById('jsonPath').value,
+							data: layoutData
+						})
+					});
+					const result = await res.json();
+					if(result.success) console.log("✅ 布局变更已自动同步至服务端！");
+				} catch (e) {
+					console.error("保存失败: ", e);
+				}
+			}
+	        // ================= 属性修改并保存 =================
+	        async function savePropertyChanges() {
+	            if (!selectedElemId || !layoutData) return alert("请先选择一个元素");
+	            const id = parseInt(document.getElementById('editId').value);
+	            const newLabel = document.getElementById('editLabel').value;
+	            const newInstruction = document.getElementById('editInstruction').value;
+	            const elem = layoutData.elements.find(e => e.id === id);
+	            if (elem) {
+	                elem.label = newLabel;
+	                if (!elem.style) elem.style = {};
+	                elem.style.drawing_instruction = newInstruction;
+	                // 更新画布上的文字
+	                const div = document.getElementById(`elem-${id}`);
+	                div.querySelector('.label-preview').innerText = newLabel;
+	                div.querySelector('.instr-preview').innerText = newInstruction;
+	            }
+	            try {
+	                const res = await fetch(`${BASE_URL}/api/save_json`, {
+	                    method: 'POST',
+	                    headers: { 'Content-Type': 'application/json' },
+	                    body: JSON.stringify({
+	                        json_path: document.getElementById('jsonPath').value,
+	                        data: layoutData
+	                    })
+	                });
+	                const result = await res.json();
+	                if(result.success) alert("✅ 修改已保存至服务端 JSON！");
+	            } catch (e) {
+	                alert("保存失败: " + e.message);
+	            }
+	        }
+
+			// ================= Step 3: 绘制图像 =================
+			async function drawImage() {
+				const btn = document.getElementById('btnDraw');
+				btn.innerText = '⏳ 渲染管线执行中...';
+				btn.disabled = true;
+				const currentImagePath = document.getElementById('serverImagePath').value;
+				const imgWidth = parseInt(document.getElementById('imgWidth').value);
+				const imgHeight = parseInt(document.getElementById('imgHeight').value);
+				if (!imgWidth || !imgHeight) {
+					alert("请输入图像的宽度和高度！");
+					return;
+				}
+				const numImages = parseInt(document.getElementById('numImages').value);
+				if (isNaN(numImages) || numImages < 1 || numImages > 6) {
+					alert("生成数量必须在 1 到 6 之间！");
+					btn.innerText = '🎨 批量绘制图像';
+					btn.disabled = false;
+					return;
+				}
+				const gallery = document.getElementById('output-gallery');
+				gallery.innerHTML = '<div style="color: #007AFF; text-align: center; grid-column: 1/-1; font-weight:bold;">⏳ 正在生成 ' + numImages + ' 张图像，请耐心等待...</div>';
+				try {
+					const res = await fetch(`${BASE_URL}/api/draw`, {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({
+							image_path: currentImagePath || null, // 可能为空
+							json_path: document.getElementById('jsonPath').value,
+							num_images: numImages,
+							width: imgWidth,    // 传尺寸
+							height: imgHeight   // 传尺寸
+						})
+					});
+					const data = await res.json();
+					gallery.innerHTML = ''; // 清空加载提示
+					if (data.success) {
+						const imageCount = data.output_paths.length;
+						if (imageCount === 1) {
+							gallery.style.gridTemplateColumns = '1fr';
+							gallery.style.maxWidth = '50%'; // 单图限制最大宽度，居中展示
+							gallery.style.margin = '0 auto';
+						} else if (imageCount === 2) {
+							gallery.style.gridTemplateColumns = 'repeat(2, 1fr)';
+							gallery.style.maxWidth = '80%';
+							gallery.style.margin = '0 auto';
+						} else {
+							// 3张以上恢复自适应
+							gallery.style.gridTemplateColumns = 'repeat(auto-fit, minmax(240px, 1fr))';
+							gallery.style.maxWidth = '100%';
+							gallery.style.margin = '0';
+						}
+						// 👇 遍历后端返回的路径数组，渲染多图
+						data.output_paths.forEach((path, index) => {
+							const itemDiv = document.createElement('div');
+							itemDiv.className = 'gallery-item';
+							const img = document.createElement('img');
+							img.src = `${BASE_URL}/${path}?t=${new Date().getTime()}`;
+							// 点击图片放大或后续操作可在此扩展
+							const label = document.createElement('div');
+							label.className = 'img-label';
+							label.innerText = `方案 ${index + 1}`;
+							itemDiv.appendChild(img);
+							itemDiv.appendChild(label);
+							gallery.appendChild(itemDiv);
+						});
+						alert(`✅ 成功生成 ${numImages} 张图像！`);
+					} else {
+						alert('❌ 绘制失败: ' + data.msg);
+						gallery.innerHTML = '<div style="color: #FF3B30; text-align: center; grid-column: 1/-1;">生成失败</div>';
+					}
+				} catch (e) {
+					alert('请求失败: ' + e.message);
+					gallery.innerHTML = '<div style="color: #FF3B30; text-align: center; grid-column: 1/-1;">请求中断</div>';
+				} finally {
+					btn.innerText = '🎨 批量绘制图像';
+					btn.disabled = false;
+				}
+			}
+	    </script>
+	</body>
+	</html>
