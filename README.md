@@ -1,80 +1,88 @@
 # PPT_Draw
 
-> AI 驱动的 PPT 页面结构化解析、交互编辑与智能绘图系统
+[简体中文](README_CN.md) | English
 
-PPT_Draw 是一个结合 **多模态视觉模型（VLM）+ 大语言模型（LLM）+ AI 图像生成** 的智能设计平台。
-支持从 **图片提取 PPT 布局**、**文本生成 PPT 页面结构**、**在线拖拽编辑版式**、**批量生成视觉设计稿** 的完整工作流。
+> AI-powered PPT page structure parsing, interactive editing, and intelligent design generation system
 
----
+PPT_Draw is an intelligent design platform powered by **Vision-Language Models (VLMs)**, **Large Language Models (LLMs)**, and **AI image generation models**.
 
-# ✨ 项目特色
+It provides a complete workflow for:
 
-✅ 图片一键识别 PPT 页面布局
-✅ 文本描述直接生成 PPT 页面结构
-✅ 浏览器在线拖拽编辑布局元素
-✅ 支持参考图控制视觉风格
-✅ 一键批量生成多套设计方案
-✅ 前后端分离，易部署，易扩展
+* Extracting PPT layouts from images
+* Generating PPT page structures from text prompts
+* Editing layouts interactively in the browser
+* Batch generating polished visual slide designs
 
 ---
 
-# 🎯 项目定位
+# ✨ Features
 
-传统 PPT 制作存在以下痛点：
+✅ One-click PPT layout extraction from images
+✅ Generate slide structure directly from text prompts
+✅ Drag-and-drop layout editor in browser
+✅ Reference-image guided style control
+✅ Batch generation of multiple design candidates
+✅ Frontend/backend decoupled architecture, easy to deploy and extend
 
-* 排版耗时
-* 设计门槛高
-* 风格统一困难
-* 内容转视觉效率低
+---
 
-PPT_Draw 通过 AI 自动完成：
+# 🎯 Why PPT_Draw?
 
-```text id="p0u7e4"
-内容输入
-   ↓
-结构化布局生成
-   ↓
-可视化编辑
-   ↓
-AI 智能绘图
-   ↓
-高质量 PPT 页面产出
+Traditional PPT creation often suffers from:
+
+* Time-consuming layout work
+* High design barrier
+* Inconsistent visual style
+* Low efficiency turning ideas into slides
+
+PPT_Draw automates the process:
+
+```text
+Content Input
+     ↓
+Structured Layout Generation
+     ↓
+Visual Editing
+     ↓
+AI Design Rendering
+     ↓
+High-quality PPT Output
 ```
 
-适用于：
+Use cases:
 
-* 商务汇报
-* 产品发布会
-* 教学课件
-* 论文展示
-* 数据分析汇报
-* AI 内容创作平台
+* Business presentations
+* Product launches
+* Educational slides
+* Academic presentations
+* Data reports
+* AI content creation platforms
 
 ---
 
-# 🧠 系统功能总览
+# 🧠 Core Functions
 
-# 1️⃣ 图片解析布局（Image → Layout）
+# 1️⃣ Image → Layout
 
-上传 PPT 页面截图，系统自动识别：
+Upload a PPT screenshot or slide image. The system automatically detects:
 
-* 标题区
-* 文本块
-* 图片区域
-* 表格
-* 坐标图
-* 模块结构
+* Title area
+* Text blocks
+* Image regions
+* Tables
+* Charts / coordinate systems
+* Overall modular structure
 
-输出标准 JSON：
+Outputs standardized JSON:
 
-```json id="w6jc2r"
+```json
 {
   "elements":[
     {
       "id":1,
       "type":"text",
       "bbox":[80,60,920,180],
-      "label":"标题区域"
+      "label":"Title Area"
     }
   ]
 }
@@ -82,114 +90,114 @@ AI 智能绘图
 
 ---
 
-# 2️⃣ 文本生成布局（Text → Layout）
+# 2️⃣ Text → Layout
 
-输入一句需求：
+Input a requirement such as:
 
-```text id="8lh3gk"
-做一个 RLHF vs DPO 的对比 PPT，用表格+坐标图展示差异
+```text
+Create a comparison slide for RLHF vs DPO using a table and coordinate chart.
 ```
 
-系统自动生成结构化 PPT 页面布局。
+The system automatically generates a structured PPT page layout.
 
 ---
 
-# 3️⃣ 在线编辑布局（Layout Editor）
+# 3️⃣ Interactive Layout Editor
 
-支持在浏览器中实时编辑布局：
+Edit layouts directly in the browser.
 
-### 元素交互能力：
+### Supported interactions:
 
-✅ 拖拽移动
-✅ 八方向缩放
-✅ 修改文字内容
-✅ 修改绘图提示词
-✅ Delete 删除元素
-✅ 上传本地 JSON
-✅ 下载 JSON
+✅ Drag and move elements
+✅ 8-direction resize handles
+✅ Edit labels/text
+✅ Edit drawing instructions
+✅ Delete elements
+✅ Upload local JSON
+✅ Download current JSON
 
 ---
 
-# 4️⃣ AI 绘图生成（Layout → Design）
+# 4️⃣ Layout → Design
 
-根据布局 JSON 自动生成 PPT 页面视觉稿。
+Generate visual slide designs automatically based on layout JSON.
 
-支持：
+Supports:
 
-* 批量生成 1～6 张方案
-* 自定义尺寸
-* 上传参考图（最多3张）
-* 多方案对比选择
+* Batch generation of 1–6 results
+* Custom width / height
+* Upload up to 3 reference images
+* Compare multiple generated options
 
-输出示例：
+Example outputs:
 
-```text id="4w6g2s"
-方案1.png
-方案2.png
-方案3.png
+```text
+design_1.png
+design_2.png
+design_3.png
 ...
 ```
 
 ---
 
-# 🏗️ 系统架构
+# 🏗️ Architecture
 
-```text id="9jv0q2"
-                 ┌──────────────┐
-                 │ 前端工作台 UI │
-                 └──────┬───────┘
-                        │
-                        ▼
-                ┌───────────────┐
-                │ FastAPI 后端服务 │
-                └──────┬────────┘
-                       │
-     ┌─────────────────┼─────────────────┐
-     ▼                 ▼                 ▼
-布局识别模块       文本生成模块       AI绘图模块
-(VLM)             (LLM)             (Image Gen)
+```text
+                ┌────────────────────┐
+                │ Frontend Workspace │
+                └─────────┬──────────┘
+                          │
+                          ▼
+                ┌────────────────────┐
+                │ FastAPI Backend    │
+                └─────────┬──────────┘
+                          │
+     ┌────────────────────┼────────────────────┐
+     ▼                    ▼                    ▼
+Layout Parsing       Text Generation      AI Rendering
+(VLM)                (LLM)               (Image Gen)
 ```
 
 ---
 
-# 💻 技术栈
+# 💻 Tech Stack
 
-# 后端
+## Backend
 
 * FastAPI
 * Uvicorn
 * Pydantic
 * Pillow
 
-# 前端
+## Frontend
 
 * HTML5
 * CSS3
-* JavaScript（原生）
-* DOM 可视化编辑器
+* Vanilla JavaScript
+* DOM-based visual editor
 
-# AI 能力
+## AI Modules
 
-* 多模态视觉识别模型（VLM）
-* 大语言模型（Layout JSON Generation）
-* 文生图模型（Image Generation）
+* Vision-Language Models (VLM)
+* Large Language Models (Layout JSON generation)
+* Text-to-Image Models
 
 ---
 
-# 📁 项目结构
+# 📁 Project Structure
 
-```bash id="c0hv3r"
+```bash
 PPT_Draw/
-│── server.py                 # FastAPI 主服务
+│── server.py                 # FastAPI main server
 │
 ├── core/
-│   ├── vlm_analyze.py        # 图片布局识别
-│   ├── text_to_json.py       # 文本生成布局
-│   ├── draw_image.py         # AI 绘图
-│   └── show.py              # 调试可视化
+│   ├── vlm_analyze.py        # Image layout extraction
+│   ├── text_to_json.py      # Text-to-layout generation
+│   ├── draw_image.py        # AI rendering
+│   └── show.py             # Debug visualization
 │
 ├── static/
-│   └── index.html           # 前端工作台
+│   └── index.html          # Frontend workspace
 │
 ├── assets/
 │   ├── layout.json
@@ -207,142 +215,142 @@ PPT_Draw/
 
 ---
 
-# 🚀 快速开始
+# 🚀 Quick Start
 
-# 1. 克隆项目
+## 1. Clone Repository
 
-```bash id="n9wyiu"
+```bash
 git clone https://github.com/yourname/PPT_Draw.git
 cd PPT_Draw
 ```
 
 ---
 
-# 2. 安装依赖
+## 2. Install Dependencies
 
-```bash id="z4v4f4"
+```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-# 3. 配置 API Key
+## 3. Configure API Key
 
-项目使用 DashScope / 模型服务：
+This project uses DashScope / model services:
 
-```bash id="f4u4v7"
+```bash
 DASHSCOPE_API_KEY=your_api_key
 ```
 
-Windows：
+Windows:
 
-```bash id="4d5r8s"
+```bash
 set DASHSCOPE_API_KEY=your_api_key
 ```
 
-Linux / macOS：
+Linux / macOS:
 
-```bash id="o2z5d1"
+```bash
 export DASHSCOPE_API_KEY=your_api_key
 ```
 
 ---
 
-# 4. 启动项目
+## 4. Run the Project
 
-```bash id="r7p6b2"
+```bash
 uvicorn server:app --reload
 ```
 
-访问：
+Visit:
 
-```bash id="w3u0c9"
+```text
 http://127.0.0.1:8000
 ```
 
 ---
 
-# 🖥️ 前端界面说明
+# 🖥️ Frontend Interface
 
-系统采用左右双栏工作台设计。
-
----
-
-# 左侧控制台
-
-## Step 1：布局提取 / 生成
-
-### 📷 图片识别布局
-
-上传 PPT 页面图片，自动提取结构。
-
-参数：
-
-* n_runs（多次采样）
-* iou_threshold（一致性阈值）
-
-### 📝 文本生成布局
-
-输入需求描述，自动生成 PPT 页面结构。
+The UI uses a dual-panel workspace layout.
 
 ---
 
-## Step 2：交互编辑器
+# Left Panel
 
-### 支持：
+## Step 1: Layout Extraction / Generation
 
-* 加载布局 JSON
-* 拖拽元素
-* Resize 调整大小
-* 修改标题文字
-* 修改绘图提示词
-* 删除元素
-* 下载 JSON
+### 📷 Extract from Image
+
+Upload a slide image and detect page structure automatically.
+
+Parameters:
+
+* `n_runs` (multi-run sampling)
+* `iou_threshold` (consistency threshold)
+
+### 📝 Generate from Text
+
+Enter your slide requirement and generate layout automatically.
 
 ---
 
-## Step 3：绘图生成
+## Step 2: Interactive Editor
 
-参数：
+Supports:
 
-* 图像宽度
-* 图像高度
-* 生成数量（1~6）
-* 上传参考图（最多3张）
+* Load JSON layout
+* Drag elements
+* Resize elements
+* Edit labels
+* Edit drawing prompts
+* Delete elements
+* Download JSON
 
-点击：
+---
 
-```text id="z9u4h2"
-🎨 批量绘制图像
+## Step 3: Design Generation
+
+Parameters:
+
+* Width
+* Height
+* Number of outputs (1–6)
+* Upload reference images (up to 3)
+
+Click:
+
+```text
+🎨 Generate Designs
 ```
 
 ---
 
-# 右侧结果区
+# Right Panel
 
-展示 AI 输出多套方案画廊。
+Displays generated design gallery.
 
 ---
 
-# 🔌 API 接口文档
+# 🔌 API Documentation
 
-FastAPI 自动生成文档：
+FastAPI auto-generated docs:
 
-```text id="f7w1q3"
+```text
 http://127.0.0.1:8000/docs
 ```
 
 ---
 
-# 核心接口
+# Main APIs
 
-## 1. 图片提取布局
+## 1. Analyze Layout
 
-```http id="r9m8q4"
+```http
 POST /api/analyze_layout
 ```
 
-FormData：
+FormData:
 
 * image_file
 * n_runs
@@ -350,35 +358,35 @@ FormData：
 
 ---
 
-## 2. 文本生成布局
+## 2. Generate PPT Layout
 
-```http id="s1m7c4"
+```http
 POST /api/generate_ppt_layout
 ```
 
-```json id="v4n2h8"
+```json
 {
-  "user_input":"科技风融资路演首页"
+  "user_input":"Create a futuristic startup pitch deck cover slide"
 }
 ```
 
 ---
 
-## 3. 保存 JSON
+## 3. Save JSON
 
-```http id="j4r6x9"
+```http
 POST /api/save_json
 ```
 
 ---
 
-## 4. AI 绘图
+## 4. Draw Designs
 
-```http id="p3x9k2"
+```http
 POST /api/draw
 ```
 
-```json id="t4y7v3"
+```json
 {
   "json_path":"assets/layout.json",
   "width":1920,
@@ -390,64 +398,64 @@ POST /api/draw
 
 ---
 
-## 5. 上传参考图
+## 5. Upload Reference Images
 
-```http id="q9f5b1"
+```http
 POST /api/upload_references
 ```
 
 ---
 
-# 📌 使用流程
+# 📌 Workflow
 
-# 方式一：参考图生成
+## Method 1: From Reference Slide
 
-```text id="f6k8v0"
-上传 PPT 图片
-→ 自动识别布局
-→ 编辑优化
-→ AI生成页面
+```text
+Upload PPT Image
+→ Detect Layout
+→ Edit Structure
+→ Generate Designs
 ```
 
 ---
 
-# 方式二：文本生成
+## Method 2: From Text Prompt
 
-```text id="e1d9n5"
-输入一句话需求
-→ 自动生成结构
-→ 编辑优化
-→ 输出设计稿
+```text
+Enter Requirement
+→ Generate Layout
+→ Edit Structure
+→ Output Final Designs
 ```
 
 ---
 
-# 🎨 JSON 布局说明
+# 🎨 Layout JSON Coordinate System
 
-坐标系统一使用：
+All coordinates use:
 
-```text id="x6p0a3"
+```text
 1000 × 1000
 ```
 
-示例：
+Example:
 
-```json id="m2q7w4"
+```json
 {
   "id":2,
   "type":"box",
   "bbox":[100,200,900,600],
-  "label":"图片区"
+  "label":"Image Area"
 }
 ```
 
 ---
 
-# 📦 输出目录
+# 📦 Output Directory
 
-生成图片保存在：
+Generated images are saved in:
 
-```bash id="u8r2z7"
+```bash
 outputs/output_1.png
 outputs/output_2.png
 outputs/output_3.png
@@ -455,40 +463,42 @@ outputs/output_3.png
 
 ---
 
-# 🔒 安全说明
+# 🔒 Security Notes
 
-请妥善保管你的 API Key，建议通过环境变量配置，不要提交到 Git 仓库。
-
----
-
-# 🛣️ 后续规划
-
-* 导出 PPTX 文件
-* 多页 PPT 自动生成
-* 企业模板库
-* 团队协同编辑
-* 云端 SaaS 部署
-* 品牌风格训练
+Please keep your API key secure.
+Use environment variables and do not commit secrets to Git repositories.
 
 ---
 
-# 🤝 贡献方式
+# 🛣️ Roadmap
 
-欢迎提交：
-
-* Issue
-* Pull Request
-* 功能建议
-* UI 优化方案
-* Prompt 优化
+* Export to PPTX
+* Multi-page PPT generation
+* Enterprise template library
+* Team collaboration
+* Cloud SaaS deployment
+* Brand-style fine-tuning
 
 ---
 
-# 👨‍💻 作者
+# 🤝 Contributing
 
-Yao Zhu  
+Contributions are welcome via:
 
->学术主页 https://scholar.google.com/citations?user=Te8bmo0AAAAJ&hl=zh-CN
+* Issues
+* Pull Requests
+* Feature requests
+* UI improvements
+* Prompt engineering ideas
+
+---
+
+# 👨‍💻 Author
+
+Yao Zhu
+
+Academic Profile:
+[https://scholar.google.com/citations?user=Te8bmo0AAAAJ&hl=zh-CN](https://scholar.google.com/citations?user=Te8bmo0AAAAJ&hl=zh-CN)
 
 ---
 
@@ -498,6 +508,6 @@ MIT License
 
 ---
 
-# ⭐ 如果你喜欢这个项目
+# ⭐ If You Like This Project
 
-欢迎 Star 支持一下！
+Please consider giving it a Star!
