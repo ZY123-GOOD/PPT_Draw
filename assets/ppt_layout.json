@@ -1,6 +1,6 @@
 {
     "page": {
-        "layout_pattern": "split-2",
+        "layout_pattern": "split-3",
         "visual_style": "dark-tech",
         "whitespace_strategy": "breathable",
         "visual_flow": "left-to-right"
@@ -10,329 +10,291 @@
             "id": 1,
             "type": "heading",
             "bbox": [
+                50,
                 40,
-                30,
-                960,
+                950,
                 90
             ],
             "center": [
                 500,
-                60
+                65
             ],
-            "label": "多模态大模型驱动：航天涡轮叶片智能设计平台",
+            "label": "人工智能安全性研究背景：从黑盒到可控系统的三维视角",
             "visual_weight": "dominant",
             "z_index": 10,
             "style": {
                 "shape": "none",
                 "fill_color": "#FFFFFF",
-                "border_color": "#000000",
+                "border_color": "none",
                 "border_width": 0,
                 "text_alignment": "left",
                 "font_size_hint": "3xl",
                 "font_weight": "bold",
-                "drawing_instruction": "顶部通栏标题，使用无衬线字体，白色文字配合深色背景，体现科技感与专业性。"
+                "drawing_instruction": "顶部通栏标题，左对齐，使用高对比度白色字体，奠定专业、严肃的学术基调。"
             },
             "structure": {},
-            "description": "页面主标题，明确主题"
+            "description": "页面主标题，明确主题范围。"
         },
         {
             "id": 2,
             "type": "subtitle",
             "bbox": [
-                40,
+                50,
                 95,
-                600,
+                950,
                 125
             ],
             "center": [
-                320,
+                500,
                 110
             ],
-            "label": "融合几何拓扑、流体仿真与材料图谱的生成式设计工作流",
+            "label": "构建可信AI系统的三大支柱：可观测性 (Observability) · 可监控性 (Monitorability) · 可操作性 (Actionability)",
             "visual_weight": "secondary",
             "z_index": 9,
             "style": {
                 "shape": "none",
                 "fill_color": "#A0AEC0",
-                "border_color": "#000000",
+                "border_color": "none",
                 "border_width": 0,
                 "text_alignment": "left",
                 "font_size_hint": "base",
                 "font_weight": "regular",
-                "drawing_instruction": "副标题位于主标题下方，灰色文字，解释技术核心，左对齐。"
+                "drawing_instruction": "位于主标题下方，灰色副标题，概括本页核心逻辑框架，引导读者进入三列布局。"
             },
             "structure": {},
-            "description": "补充说明技术路径"
+            "description": "副标题，简述三个分析维度。"
         },
         {
             "id": 3,
-            "type": "card",
+            "type": "divider",
             "bbox": [
-                40,
-                150,
-                480,
-                960
+                50,
+                135,
+                950,
+                137
             ],
             "center": [
-                260,
+                500,
+                136
+            ],
+            "label": "视觉分隔线，区分标题区与内容区",
+            "visual_weight": "decorative",
+            "z_index": 8,
+            "style": {
+                "shape": "rectangle",
+                "fill_color": "#4A5568",
+                "border_color": "none",
+                "border_width": 0,
+                "text_alignment": "center",
+                "font_size_hint": "xs",
+                "font_weight": "light",
+                "drawing_instruction": "细长的水平分割线，横跨整个页面宽度，颜色为深灰蓝色，用于视觉上切割头部和内容主体。"
+            },
+            "structure": {},
+            "description": "装饰性元素，增强版面结构感。"
+        },
+        {
+            "id": 4,
+            "type": "card",
+            "bbox": [
+                50,
+                160,
+                310,
+                950
+            ],
+            "center": [
+                180,
                 555
             ],
-            "label": "软件平台界面示意图 (UI Mockup): 左侧为‘自然语言指令区’与‘多模态输入区’。顶部显示用户输入：'优化高压涡轮叶片气冷通道，目标提升冷却效率15%，保持结构强度'。中部展示3D叶片网格模型预览，带有热力图叠加层（红色表示高温区）。底部为‘生成参数控制面板’，包含滑块：'迭代次数: 500', '置信度阈值: 0.85'。右侧边栏显示‘实时物理约束检查’状态列表：[✓ 应力集中达标], [✓ 气流分离抑制], [⚠ 制造可行性待确认]。整体界面采用深灰底色 (#1A202C)，霓虹蓝 (#00FFFF) 作为高亮交互色。",
+            "label": "Card 1: 可观测性 (Observability) - 内部状态的透明化\n核心定义：通过非侵入式手段获取模型内部激活值、注意力分布及中间层表征的能力。\n关键挑战：\n1. 高维稀疏性：Transformer内部状态维度极高，难以直接映射语义。\n2. 动态变化：推理过程中的状态随输入实时漂移。\n技术路径：\n- Mechanistic Interpretability (机械可解释性)\n- Probe Classifiers (探针分类器)\n- Activation Patching (激活补丁)\n价值：揭示'黑盒'决策逻辑，识别虚假相关性。",
             "visual_weight": "primary",
             "z_index": 5,
             "style": {
                 "shape": "rounded-rect",
                 "fill_color": "#1A202C",
-                "border_color": "#2D3748",
+                "border_color": "#4299E1",
                 "border_width": 2,
                 "text_alignment": "left",
                 "font_size_hint": "sm",
                 "font_weight": "medium",
-                "drawing_instruction": "模拟一个现代化的深色模式SaaS软件界面。布局分为左中右三栏或上下结构。关键数据用高亮色块标注。包含典型的UI元素如按钮、滑块、状态指示灯。视觉风格需严谨、精密，体现工业软件特征。"
-            },
-            "structure": {
-                "rows": "",
-                "cols": "",
-                "cells": "",
-                "axis_labels": "",
-                "scatter_items": "",
-                "flow_direction": "",
-                "timeline_date": "",
-                "timeline_event": ""
-            },
-            "description": "核心视觉元素，展示产品形态和用户交互流程"
-        },
-        {
-            "id": 4,
-            "type": "divider",
-            "bbox": [
-                500,
-                150,
-                502,
-                960
-            ],
-            "center": [
-                501,
-                555
-            ],
-            "label": "垂直分割线，分隔左侧界面展示与右侧核心价值解析",
-            "visual_weight": "tertiary",
-            "z_index": 4,
-            "style": {
-                "shape": "none",
-                "fill_color": "#4A5568",
-                "border_color": "#4A5568",
-                "border_width": 1,
-                "text_alignment": "center",
-                "font_size_hint": "xs",
-                "font_weight": "light",
-                "drawing_instruction": "一条细长的垂直线，颜色为深灰色，用于在视觉上清晰划分左右两个内容区域，保持页面的秩序感。"
+                "drawing_instruction": "左侧第一列卡片。深蓝色背景，亮蓝色边框强调。内部采用层级排版：顶部为大号加粗标题，中部为定义，下部为列表形式的挑战与技术路径。留白适中，确保文字可读性。"
             },
             "structure": {},
-            "description": "视觉分隔符"
+            "description": "第一个维度的详细阐述卡片，聚焦于'看清内部'。"
         },
         {
             "id": 5,
-            "type": "highlight_box",
+            "type": "card",
             "bbox": [
-                520,
-                150,
-                960,
-                350
+                345,
+                160,
+                605,
+                950
             ],
             "center": [
-                740,
-                250
+                475,
+                555
             ],
-            "label": "核心能力一：多模态语义理解与几何生成。系统能够解析工程师的自然语言需求及历史CAD图纸，利用扩散模型直接生成符合空气动力学原理的初始叶片几何拓扑结构，将设计周期从‘周’级缩短至‘小时’级。",
+            "label": "Card 2: 可监控性 (Monitorability) - 运行时行为的实时追踪\n核心定义：在部署环境中持续检测异常输出、分布偏移及潜在恶意攻击的能力。\n关键挑战：\n1. 概念漂移：测试数据分布与训练数据不一致导致性能下降。\n2. 对抗样本：精心构造的输入诱导模型产生有害输出。\n技术路径：\n- Uncertainty Quantification (不确定性量化)\n- Out-of-Distribution Detection (OOD检测)\n- Red Teaming Automation (自动化红队测试)\n价值：建立安全护栏，实时阻断风险传播。",
             "visual_weight": "primary",
-            "z_index": 6,
+            "z_index": 5,
             "style": {
                 "shape": "rounded-rect",
-                "fill_color": "#2D3748",
-                "border_color": "#00FFFF",
-                "border_width": 1,
+                "fill_color": "#1A202C",
+                "border_color": "#38B2AC",
+                "border_width": 2,
                 "text_alignment": "left",
-                "font_size_hint": "base",
-                "font_weight": "regular",
-                "drawing_instruction": "卡片式布局，深色背景，左侧或顶部带有青色高亮边框或图标，强调‘生成式设计’的高效性。文本左对齐，行间距适中。"
+                "font_size_hint": "sm",
+                "font_weight": "medium",
+                "drawing_instruction": "中间第二列卡片。深青色背景，青绿色边框强调。结构与左侧卡片保持一致，形成视觉节奏。重点突出'实时'与'检测'的概念。"
             },
             "structure": {},
-            "description": "阐述第一个关键价值点：效率与生成能力"
+            "description": "第二个维度的详细阐述卡片，聚焦于'外部监管'。"
         },
         {
             "id": 6,
-            "type": "highlight_box",
+            "type": "card",
             "bbox": [
-                520,
-                370,
-                960,
-                570
+                640,
+                160,
+                900,
+                950
             ],
             "center": [
-                740,
-                470
+                770,
+                555
             ],
-            "label": "核心能力二：物理感知闭环优化。内置轻量级CFD（计算流体动力学）代理模型，在生成过程中实时反馈温度场与压力分布数据。通过强化学习策略，自动调整内部冷却通道布局，确保在极端高温环境下满足寿命要求。",
+            "label": "Card 3: 可操作性 (Actionability) - 风险干预与修正机制\n核心定义：当检测到安全隐患时，能够即时干预推理过程或更新模型参数以纠正行为的能力。\n关键挑战：\n1. 延迟敏感：干预措施不能显著增加推理延迟。\n2. 灾难性遗忘：修正错误行为时不应破坏原有通用能力。\n技术路径：\n- Constitutional AI (宪法AI规则约束)\n- In-context Learning Correction (上下文学习修正)\n- Parameter-Efficient Fine-Tuning (PEFT紧急微调)\n价值：实现从'发现风险'到'消除风险'的闭环。",
             "visual_weight": "primary",
-            "z_index": 6,
+            "z_index": 5,
             "style": {
                 "shape": "rounded-rect",
-                "fill_color": "#2D3748",
-                "border_color": "#FF00FF",
-                "border_width": 1,
+                "fill_color": "#1A202C",
+                "border_color": "#ED8936",
+                "border_width": 2,
                 "text_alignment": "left",
-                "font_size_hint": "base",
-                "font_weight": "regular",
-                "drawing_instruction": "卡片式布局，与上一个卡片风格一致但使用品红色高亮边框，区分不同功能模块。强调‘物理仿真’与‘AI’的结合。"
+                "font_size_hint": "sm",
+                "font_weight": "medium",
+                "drawing_instruction": "右侧第三列卡片。深橙色背景，亮橙色边框强调。结构与前两列一致，但颜色暗示'行动'与'警示'。强调'闭环'与'干预'。"
             },
             "structure": {},
-            "description": "阐述第二个关键价值点：物理约束与优化"
+            "description": "第三个维度的详细阐述卡片，聚焦于'主动干预'。"
         },
         {
             "id": 7,
-            "type": "highlight_box",
+            "type": "icon",
             "bbox": [
-                520,
-                590,
-                960,
-                790
+                70,
+                180,
+                110,
+                220
             ],
             "center": [
-                740,
-                690
+                90,
+                200
             ],
-            "label": "核心能力三：可制造性校验与知识沉淀。集成增材制造（3D打印）约束检查算法，自动识别并修正悬空结构或支撑难点。同时，将每次迭代的设计参数与性能结果存入向量数据库，构建企业专属的涡轮设计知识图谱。",
-            "visual_weight": "primary",
+            "label": "Icon: Eye/X-Ray representing Observability",
+            "visual_weight": "tertiary",
             "z_index": 6,
             "style": {
-                "shape": "rounded-rect",
-                "fill_color": "#2D3748",
-                "border_color": "#FFFF00",
-                "border_width": 1,
-                "text_alignment": "left",
-                "font_size_hint": "base",
-                "font_weight": "regular",
-                "drawing_instruction": "卡片式布局，使用黄色高亮边框，强调‘落地制造’与‘数据资产’。保持视觉一致性，形成右侧的三个并列要点。"
-            },
-            "structure": {},
-            "description": "阐述第三个关键价值点：制造可行性和知识管理"
-        },
-        {
-            "id": 8,
-            "type": "callout",
-            "bbox": [
-                520,
-                810,
-                960,
-                900
-            ],
-            "center": [
-                740,
-                855
-            ],
-            "label": "💡 业务价值：设计迭代速度提升 10x | 冷却效率平均优化 12% | 研发成本降低 40%",
-            "visual_weight": "secondary",
-            "z_index": 7,
-            "style": {
-                "shape": "pill",
-                "fill_color": "#00FFFF",
-                "border_color": "#00FFFF",
+                "shape": "circle",
+                "fill_color": "#4299E1",
+                "border_color": "none",
                 "border_width": 0,
                 "text_alignment": "center",
                 "font_size_hint": "lg",
                 "font_weight": "bold",
-                "drawing_instruction": "底部通栏的胶囊形状高亮条，使用明亮的青色背景和黑色文字，居中显示关键量化指标，作为页面的总结性陈述，吸引眼球。"
+                "drawing_instruction": "位于第一张卡片左上角的小型圆形图标背景，象征'透视/观察'，增强视觉识别度。"
             },
             "structure": {},
-            "description": "量化成果总结，增强说服力"
+            "description": "装饰性图标，辅助表达可观测性。"
+        },
+        {
+            "id": 8,
+            "type": "icon",
+            "bbox": [
+                365,
+                180,
+                405,
+                220
+            ],
+            "center": [
+                385,
+                200
+            ],
+            "label": "Icon: Radar/Shield representing Monitorability",
+            "visual_weight": "tertiary",
+            "z_index": 6,
+            "style": {
+                "shape": "circle",
+                "fill_color": "#38B2AC",
+                "border_color": "none",
+                "border_width": 0,
+                "text_alignment": "center",
+                "font_size_hint": "lg",
+                "font_weight": "bold",
+                "drawing_instruction": "位于第二张卡片左上角的小型圆形图标背景，象征'雷达/监控'，增强视觉识别度。"
+            },
+            "structure": {},
+            "description": "装饰性图标，辅助表达可监控性。"
         },
         {
             "id": 9,
             "type": "icon",
             "bbox": [
-                530,
-                160,
-                560,
-                190
+                660,
+                180,
+                700,
+                220
             ],
             "center": [
-                545,
-                175
+                680,
+                200
             ],
-            "label": "Icon: Brain/Chip symbol representing AI Core",
-            "visual_weight": "decorative",
-            "z_index": 8,
+            "label": "Icon: Hand/Gear representing Actionability",
+            "visual_weight": "tertiary",
+            "z_index": 6,
             "style": {
                 "shape": "circle",
-                "fill_color": "#00FFFF",
-                "border_color": "#000000",
+                "fill_color": "#ED8936",
+                "border_color": "none",
                 "border_width": 0,
                 "text_alignment": "center",
-                "font_size_hint": "xs",
-                "font_weight": "regular",
-                "drawing_instruction": "在第一个高亮盒左上角放置一个小图标，象征人工智能核心，颜色与边框呼应。"
+                "font_size_hint": "lg",
+                "font_weight": "bold",
+                "drawing_instruction": "位于第三张卡片左上角的小型圆形图标背景，象征'操作/控制'，增强视觉识别度。"
             },
             "structure": {},
-            "description": "装饰性图标，辅助语义"
+            "description": "装饰性图标，辅助表达可操作性。"
         },
         {
             "id": 10,
-            "type": "icon",
+            "type": "highlight_box",
             "bbox": [
-                530,
-                380,
-                560,
-                410
+                50,
+                960,
+                900,
+                990
             ],
             "center": [
-                545,
-                395
+                475,
+                975
             ],
-            "label": "Icon: Wind/Turbine symbol representing Fluid Dynamics",
-            "visual_weight": "decorative",
-            "z_index": 8,
+            "label": "总结：三者构成AI安全的完整生命周期——观测是基础，监控是保障，操作是目的。缺一不可。",
+            "visual_weight": "secondary",
+            "z_index": 7,
             "style": {
-                "shape": "circle",
-                "fill_color": "#FF00FF",
-                "border_color": "#000000",
-                "border_width": 0,
+                "shape": "rounded-rect",
+                "fill_color": "#2D3748",
+                "border_color": "#718096",
+                "border_width": 1,
                 "text_alignment": "center",
                 "font_size_hint": "xs",
                 "font_weight": "regular",
-                "drawing_instruction": "在第二个高亮盒左上角放置一个小图标，象征流体/风力，颜色与边框呼应。"
+                "drawing_instruction": "底部通栏总结框，半透明深色背景，白色文字。居中排列，作为页面的收尾，强化整体逻辑关系。"
             },
             "structure": {},
-            "description": "装饰性图标，辅助语义"
-        },
-        {
-            "id": 11,
-            "type": "icon",
-            "bbox": [
-                530,
-                600,
-                560,
-                630
-            ],
-            "center": [
-                545,
-                615
-            ],
-            "label": "Icon: Factory/Layered structure symbol representing Manufacturing",
-            "visual_weight": "decorative",
-            "z_index": 8,
-            "style": {
-                "shape": "circle",
-                "fill_color": "#FFFF00",
-                "border_color": "#000000",
-                "border_width": 0,
-                "text_alignment": "center",
-                "font_size_hint": "xs",
-                "font_weight": "regular",
-                "drawing_instruction": "在第三个高亮盒左上角放置一个小图标，象征制造/层级，颜色与边框呼应。"
-            },
-            "structure": {},
-            "description": "装饰性图标，辅助语义"
+            "description": "页面底部的总结性陈述，串联三个维度。"
         }
     ]
 }

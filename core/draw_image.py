@@ -209,7 +209,7 @@ def generate_image(
     ]
 
     response = MultiModalConversation.call(
-        model="qwen-image-2.0",
+        model="qwen-image-2.0-pro-2026-03-03",
         messages=messages,
         result_format="message",
         size=size
