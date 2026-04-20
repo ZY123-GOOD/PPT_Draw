@@ -13,100 +13,71 @@
                 50,
                 40,
                 950,
-                90
+                100
             ],
             "center": [
                 500,
-                65
+                70
             ],
-            "label": "人工智能安全性研究背景：从黑盒到可控系统的三维视角",
+            "label": "构建可信AI系统的三大支柱",
             "visual_weight": "dominant",
             "z_index": 10,
             "style": {
                 "shape": "none",
                 "fill_color": "#FFFFFF",
-                "border_color": "none",
+                "border_color": "#000000",
                 "border_width": 0,
-                "text_alignment": "left",
+                "text_alignment": "center",
                 "font_size_hint": "3xl",
                 "font_weight": "bold",
-                "drawing_instruction": "顶部通栏标题，左对齐，使用高对比度白色字体，奠定专业、严肃的学术基调。"
+                "drawing_instruction": "顶部居中，使用无衬线字体，字间距微宽，营造科技感与权威感。背景为深色，文字高亮白色。"
             },
             "structure": {},
-            "description": "页面主标题，明确主题范围。"
+            "description": "页面主标题，确立主题"
         },
         {
             "id": 2,
             "type": "subtitle",
             "bbox": [
-                50,
-                95,
-                950,
-                125
+                200,
+                110,
+                800,
+                140
             ],
             "center": [
                 500,
-                110
+                125
             ],
-            "label": "构建可信AI系统的三大支柱：可观测性 (Observability) · 可监控性 (Monitorability) · 可操作性 (Actionability)",
+            "label": "可观测性 (Observability) · 可监控性 (Monitorability) · 可操作性 (Actionability)",
             "visual_weight": "secondary",
             "z_index": 9,
             "style": {
                 "shape": "none",
                 "fill_color": "#A0AEC0",
-                "border_color": "none",
+                "border_color": "#000000",
                 "border_width": 0,
-                "text_alignment": "left",
-                "font_size_hint": "base",
-                "font_weight": "regular",
-                "drawing_instruction": "位于主标题下方，灰色副标题，概括本页核心逻辑框架，引导读者进入三列布局。"
+                "text_alignment": "center",
+                "font_size_hint": "lg",
+                "font_weight": "medium",
+                "drawing_instruction": "位于主标题正下方，字号较小，颜色为浅灰蓝色，作为副标题补充核心关键词。"
             },
             "structure": {},
-            "description": "副标题，简述三个分析维度。"
+            "description": "副标题，列出三个核心概念"
         },
         {
             "id": 3,
-            "type": "divider",
-            "bbox": [
-                50,
-                135,
-                950,
-                137
-            ],
-            "center": [
-                500,
-                136
-            ],
-            "label": "视觉分隔线，区分标题区与内容区",
-            "visual_weight": "decorative",
-            "z_index": 8,
-            "style": {
-                "shape": "rectangle",
-                "fill_color": "#4A5568",
-                "border_color": "none",
-                "border_width": 0,
-                "text_alignment": "center",
-                "font_size_hint": "xs",
-                "font_weight": "light",
-                "drawing_instruction": "细长的水平分割线，横跨整个页面宽度，颜色为深灰蓝色，用于视觉上切割头部和内容主体。"
-            },
-            "structure": {},
-            "description": "装饰性元素，增强版面结构感。"
-        },
-        {
-            "id": 4,
             "type": "card",
             "bbox": [
                 50,
-                160,
+                180,
                 310,
-                950
+                920
             ],
             "center": [
                 180,
-                555
+                550
             ],
-            "label": "Card 1: 可观测性 (Observability) - 内部状态的透明化\n核心定义：通过非侵入式手段获取模型内部激活值、注意力分布及中间层表征的能力。\n关键挑战：\n1. 高维稀疏性：Transformer内部状态维度极高，难以直接映射语义。\n2. 动态变化：推理过程中的状态随输入实时漂移。\n技术路径：\n- Mechanistic Interpretability (机械可解释性)\n- Probe Classifiers (探针分类器)\n- Activation Patching (激活补丁)\n价值：揭示'黑盒'决策逻辑，识别虚假相关性。",
+            "label": "Card: 可观测性 (Observability)\nCore: 深入模型内部黑盒，理解决策逻辑与数据流向。\nKey Points:\n- 特征归因分析 (Feature Attribution)\n- 激活值可视化 (Activation Visualization)\n- 中间层状态追踪\nTag: #Internal_Insight",
             "visual_weight": "primary",
             "z_index": 5,
             "style": {
@@ -115,27 +86,65 @@
                 "border_color": "#4299E1",
                 "border_width": 2,
                 "text_alignment": "left",
-                "font_size_hint": "sm",
-                "font_weight": "medium",
-                "drawing_instruction": "左侧第一列卡片。深蓝色背景，亮蓝色边框强调。内部采用层级排版：顶部为大号加粗标题，中部为定义，下部为列表形式的挑战与技术路径。留白适中，确保文字可读性。"
+                "font_size_hint": "base",
+                "font_weight": "regular",
+                "drawing_instruction": "左侧栏卡片。深灰背景，蓝色边框强调'洞察'属性。内部包含图标占位符、标题和要点列表。顶部留出空间放置代表'眼睛/透视'的Icon。"
+            },
+            "structure": {
+                "rows": "",
+                "cols": "",
+                "cells": "",
+                "axis_labels": "",
+                "scatter_items": "",
+                "flow_direction": "",
+                "timeline_date": "",
+                "timeline_event": ""
+            },
+            "description": "第一支柱：可观测性，强调对模型内部机制的理解"
+        },
+        {
+            "id": 4,
+            "type": "icon",
+            "bbox": [
+                155,
+                210,
+                205,
+                260
+            ],
+            "center": [
+                180,
+                235
+            ],
+            "label": "Icon: Eye or X-Ray Scan representing internal visibility",
+            "visual_weight": "tertiary",
+            "z_index": 6,
+            "style": {
+                "shape": "circle",
+                "fill_color": "#2B6CB0",
+                "border_color": "#4299E1",
+                "border_width": 0,
+                "text_alignment": "center",
+                "font_size_hint": "xl",
+                "font_weight": "bold",
+                "drawing_instruction": "位于第一个卡片顶部中央，圆形背景，白色线条图标，象征透视和观察。"
             },
             "structure": {},
-            "description": "第一个维度的详细阐述卡片，聚焦于'看清内部'。"
+            "description": "可观测性的视觉符号"
         },
         {
             "id": 5,
             "type": "card",
             "bbox": [
                 345,
-                160,
-                605,
-                950
+                180,
+                655,
+                920
             ],
             "center": [
-                475,
-                555
+                500,
+                550
             ],
-            "label": "Card 2: 可监控性 (Monitorability) - 运行时行为的实时追踪\n核心定义：在部署环境中持续检测异常输出、分布偏移及潜在恶意攻击的能力。\n关键挑战：\n1. 概念漂移：测试数据分布与训练数据不一致导致性能下降。\n2. 对抗样本：精心构造的输入诱导模型产生有害输出。\n技术路径：\n- Uncertainty Quantification (不确定性量化)\n- Out-of-Distribution Detection (OOD检测)\n- Red Teaming Automation (自动化红队测试)\n价值：建立安全护栏，实时阻断风险传播。",
+            "label": "Card: 可监控性 (Monitorability)\nCore: 实时追踪系统行为，检测异常漂移与性能衰退。\nKey Points:\n- 数据分布漂移检测 (Data Drift Detection)\n- 实时延迟与吞吐量监控\n- 异常输入拦截警报\nTag: #Realtime_Tracking",
             "visual_weight": "primary",
             "z_index": 5,
             "style": {
@@ -144,27 +153,65 @@
                 "border_color": "#38B2AC",
                 "border_width": 2,
                 "text_alignment": "left",
-                "font_size_hint": "sm",
-                "font_weight": "medium",
-                "drawing_instruction": "中间第二列卡片。深青色背景，青绿色边框强调。结构与左侧卡片保持一致，形成视觉节奏。重点突出'实时'与'检测'的概念。"
+                "font_size_hint": "base",
+                "font_weight": "regular",
+                "drawing_instruction": "中间栏卡片。深灰背景，青绿色边框强调'持续/稳定'属性。视觉上比两侧略宽或等高，体现核心连接作用。顶部放置代表'仪表盘/雷达'的Icon。"
             },
-            "structure": {},
-            "description": "第二个维度的详细阐述卡片，聚焦于'外部监管'。"
+            "structure": {
+                "rows": "",
+                "cols": "",
+                "cells": "",
+                "axis_labels": "",
+                "scatter_items": "",
+                "flow_direction": "",
+                "timeline_date": "",
+                "timeline_event": ""
+            },
+            "description": "第二支柱：可监控性，强调运行时的状态跟踪"
         },
         {
             "id": 6,
-            "type": "card",
+            "type": "icon",
             "bbox": [
-                640,
-                160,
-                900,
-                950
+                475,
+                210,
+                525,
+                260
             ],
             "center": [
-                770,
-                555
+                500,
+                235
             ],
-            "label": "Card 3: 可操作性 (Actionability) - 风险干预与修正机制\n核心定义：当检测到安全隐患时，能够即时干预推理过程或更新模型参数以纠正行为的能力。\n关键挑战：\n1. 延迟敏感：干预措施不能显著增加推理延迟。\n2. 灾难性遗忘：修正错误行为时不应破坏原有通用能力。\n技术路径：\n- Constitutional AI (宪法AI规则约束)\n- In-context Learning Correction (上下文学习修正)\n- Parameter-Efficient Fine-Tuning (PEFT紧急微调)\n价值：实现从'发现风险'到'消除风险'的闭环。",
+            "label": "Icon: Dashboard Gauge or Radar Screen representing monitoring",
+            "visual_weight": "tertiary",
+            "z_index": 6,
+            "style": {
+                "shape": "circle",
+                "fill_color": "#2C7A7B",
+                "border_color": "#38B2AC",
+                "border_width": 0,
+                "text_alignment": "center",
+                "font_size_hint": "xl",
+                "font_weight": "bold",
+                "drawing_instruction": "位于中间卡片顶部中央，圆形背景，白色线条图标，象征监控和度量。"
+            },
+            "structure": {},
+            "description": "可监控性的视觉符号"
+        },
+        {
+            "id": 7,
+            "type": "card",
+            "bbox": [
+                690,
+                180,
+                950,
+                920
+            ],
+            "center": [
+                820,
+                550
+            ],
+            "label": "Card: 可操作性 (Actionability)\nCore: 基于洞察与监控，执行干预、回滚或自动化修复。\nKey Points:\n- 自动化熔断机制 (Automated Circuit Breakers)\n- 动态提示词注入修正\n- 人工介入工作流触发\nTag: #Intervention_Control",
             "visual_weight": "primary",
             "z_index": 5,
             "style": {
@@ -173,128 +220,141 @@
                 "border_color": "#ED8936",
                 "border_width": 2,
                 "text_alignment": "left",
-                "font_size_hint": "sm",
-                "font_weight": "medium",
-                "drawing_instruction": "右侧第三列卡片。深橙色背景，亮橙色边框强调。结构与前两列一致，但颜色暗示'行动'与'警示'。强调'闭环'与'干预'。"
+                "font_size_hint": "base",
+                "font_weight": "regular",
+                "drawing_instruction": "右侧栏卡片。深灰背景，橙色边框强调'行动/警示'属性。顶部放置代表'手柄/开关/盾牌'的Icon。"
             },
-            "structure": {},
-            "description": "第三个维度的详细阐述卡片，聚焦于'主动干预'。"
-        },
-        {
-            "id": 7,
-            "type": "icon",
-            "bbox": [
-                70,
-                180,
-                110,
-                220
-            ],
-            "center": [
-                90,
-                200
-            ],
-            "label": "Icon: Eye/X-Ray representing Observability",
-            "visual_weight": "tertiary",
-            "z_index": 6,
-            "style": {
-                "shape": "circle",
-                "fill_color": "#4299E1",
-                "border_color": "none",
-                "border_width": 0,
-                "text_alignment": "center",
-                "font_size_hint": "lg",
-                "font_weight": "bold",
-                "drawing_instruction": "位于第一张卡片左上角的小型圆形图标背景，象征'透视/观察'，增强视觉识别度。"
+            "structure": {
+                "rows": "",
+                "cols": "",
+                "cells": "",
+                "axis_labels": "",
+                "scatter_items": "",
+                "flow_direction": "",
+                "timeline_date": "",
+                "timeline_event": ""
             },
-            "structure": {},
-            "description": "装饰性图标，辅助表达可观测性。"
+            "description": "第三支柱：可操作性，强调发现问题后的解决能力"
         },
         {
             "id": 8,
             "type": "icon",
             "bbox": [
-                365,
-                180,
-                405,
-                220
+                795,
+                210,
+                845,
+                260
             ],
             "center": [
-                385,
-                200
+                820,
+                235
             ],
-            "label": "Icon: Radar/Shield representing Monitorability",
+            "label": "Icon: Hand pressing button or Shield with Checkmark representing action",
             "visual_weight": "tertiary",
             "z_index": 6,
             "style": {
                 "shape": "circle",
-                "fill_color": "#38B2AC",
-                "border_color": "none",
+                "fill_color": "#C05621",
+                "border_color": "#ED8936",
                 "border_width": 0,
                 "text_alignment": "center",
-                "font_size_hint": "lg",
+                "font_size_hint": "xl",
                 "font_weight": "bold",
-                "drawing_instruction": "位于第二张卡片左上角的小型圆形图标背景，象征'雷达/监控'，增强视觉识别度。"
+                "drawing_instruction": "位于右侧卡片顶部中央，圆形背景，白色线条图标，象征控制和执行。"
             },
             "structure": {},
-            "description": "装饰性图标，辅助表达可监控性。"
+            "description": "可操作性的视觉符号"
         },
         {
             "id": 9,
-            "type": "icon",
+            "type": "flow_arrow",
             "bbox": [
-                660,
-                180,
-                700,
-                220
+                320,
+                540,
+                335,
+                560
             ],
             "center": [
-                680,
-                200
+                327.5,
+                550
             ],
-            "label": "Icon: Hand/Gear representing Actionability",
-            "visual_weight": "tertiary",
-            "z_index": 6,
+            "label": "Flow: Insight leads to Monitoring context",
+            "visual_weight": "decorative",
+            "z_index": 4,
             "style": {
-                "shape": "circle",
-                "fill_color": "#ED8936",
-                "border_color": "none",
+                "shape": "arrow",
+                "fill_color": "#4A5568",
+                "border_color": "#4A5568",
                 "border_width": 0,
-                "text_alignment": "center",
-                "font_size_hint": "lg",
-                "font_weight": "bold",
-                "drawing_instruction": "位于第三张卡片左上角的小型圆形图标背景，象征'操作/控制'，增强视觉识别度。"
-            },
-            "structure": {},
-            "description": "装饰性图标，辅助表达可操作性。"
-        },
-        {
-            "id": 10,
-            "type": "highlight_box",
-            "bbox": [
-                50,
-                960,
-                900,
-                990
-            ],
-            "center": [
-                475,
-                975
-            ],
-            "label": "总结：三者构成AI安全的完整生命周期——观测是基础，监控是保障，操作是目的。缺一不可。",
-            "visual_weight": "secondary",
-            "z_index": 7,
-            "style": {
-                "shape": "rounded-rect",
-                "fill_color": "#2D3748",
-                "border_color": "#718096",
-                "border_width": 1,
                 "text_alignment": "center",
                 "font_size_hint": "xs",
                 "font_weight": "regular",
-                "drawing_instruction": "底部通栏总结框，半透明深色背景，白色文字。居中排列，作为页面的收尾，强化整体逻辑关系。"
+                "drawing_instruction": "连接左侧卡片和中间卡片的细微箭头，暗示从'理解'到'监控'的逻辑递进，颜色低调不抢戏。"
+            },
+            "structure": {
+                "flow_direction": "left-to-right"
+            },
+            "description": "视觉引导元素，连接第一和第二支柱"
+        },
+        {
+            "id": 10,
+            "type": "flow_arrow",
+            "bbox": [
+                665,
+                540,
+                680,
+                560
+            ],
+            "center": [
+                672.5,
+                550
+            ],
+            "label": "Flow: Monitoring triggers Action",
+            "visual_weight": "decorative",
+            "z_index": 4,
+            "style": {
+                "shape": "arrow",
+                "fill_color": "#4A5568",
+                "border_color": "#4A5568",
+                "border_width": 0,
+                "text_alignment": "center",
+                "font_size_hint": "xs",
+                "font_weight": "regular",
+                "drawing_instruction": "连接中间卡片和右侧卡片的细微箭头，暗示从'监控发现'到'采取行动'的逻辑闭环。"
+            },
+            "structure": {
+                "flow_direction": "left-to-right"
+            },
+            "description": "视觉引导元素，连接第二和第三支柱"
+        },
+        {
+            "id": 11,
+            "type": "highlight_box",
+            "bbox": [
+                50,
+                940,
+                950,
+                980
+            ],
+            "center": [
+                500,
+                960
+            ],
+            "label": "Summary: Trust is built when we can See (Observe), Track (Monitor), and Fix (Act).",
+            "visual_weight": "secondary",
+            "z_index": 8,
+            "style": {
+                "shape": "rectangle",
+                "fill_color": "#2D3748",
+                "border_color": "#4A5568",
+                "border_width": 1,
+                "text_alignment": "center",
+                "font_size_hint": "sm",
+                "font_weight": "medium",
+                "drawing_instruction": "底部通栏总结条。深色背景，浅色文字，简洁有力，概括三大支柱的共同目标——建立信任。"
             },
             "structure": {},
-            "description": "页面底部的总结性陈述，串联三个维度。"
+            "description": "页面总结，升华主题"
         }
     ]
 }
