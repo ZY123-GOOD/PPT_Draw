@@ -488,6 +488,8 @@ outputs/output_3.png
 
 Yao Zhu  
 
+>学术主页 https://scholar.google.com/citations?user=Te8bmo0AAAAJ&hl=zh-CN
+
 ---
 
 # 📄 License
