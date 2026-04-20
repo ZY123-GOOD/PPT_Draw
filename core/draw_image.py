@@ -134,70 +134,164 @@ GLOBAL STYLE:
 # 4. Qwen-Image 生成（🔥 sketch 强约束）
 # =========================================================
 import urllib.request
-def generate_image(prompt, save_path="output.png",w=None,h=None):
-    size = f"{w}*{h}" if w and h else "1024*768"
+# def generate_image(prompt, save_path="output.png",w=None,h=None):
+#     size = f"{w}*{h}" if w and h else "1024*768"
     
+#     messages = [
+#         {
+#             "role": "user",
+#             "content": [
+#                 {"text": prompt}
+#             ]
+#         }
+#     ]
+#     response = MultiModalConversation.call(
+#         model="qwen-image-2.0-pro-2026-03-03",
+#         messages=messages,
+#         result_format="message",
+#         size=size
+#     )
+#     content = response.output.choices[0].message.content
+#     image_url = None
+#     if isinstance(content, list):
+#         for item in content:
+#             if isinstance(item, dict) and "image" in item:
+#                 image_url = item["image"]
+#                 break
+#     if image_url is None:
+#         raise ValueError("No image returned")
+#     import requests
+#     img = requests.get(image_url, timeout=60).content
+#     with open(save_path, "wb") as f:
+#         f.write(img)
+#     print(f"[IMAGE SAVED] → {save_path}")
+#     return image_url, save_path
+    
+import urllib.request
+import requests
+import os
+from dashscope import MultiModalConversation
+
+
+def generate_image(
+    prompt,
+    save_path="output.png",
+    w=None,
+    h=None,
+    refs=None      # 新增：参考图列表（最多3张）
+):
+    size = f"{w}*{h}" if w and h else "1024*768"
+
+    if refs is None:
+        refs = []
+
+    refs = refs[:3]   # 最多3张
+
+    content = []
+
+    # 加图像输入
+    for img in refs:
+        if img.startswith("http://") or img.startswith("https://"):
+            content.append({"image": img})
+        else:
+            # 本地文件转 file://
+            abs_path = os.path.abspath(img)
+            content.append({"image": f"file://{abs_path}"})
+
+    # 最后加文字提示词
+    content.append({"text": prompt})
+
     messages = [
         {
             "role": "user",
-            "content": [
-                {"text": prompt}
-            ]
+            "content": content
         }
     ]
+
     response = MultiModalConversation.call(
-        model="qwen-image-2.0-pro-2026-03-03",
+        model="qwen-image-2.0",
         messages=messages,
         result_format="message",
         size=size
     )
-    content = response.output.choices[0].message.content
+
+    content_resp = response.output.choices[0].message.content
+
     image_url = None
-    if isinstance(content, list):
-        for item in content:
+
+    if isinstance(content_resp, list):
+        for item in content_resp:
             if isinstance(item, dict) and "image" in item:
                 image_url = item["image"]
                 break
+
     if image_url is None:
         raise ValueError("No image returned")
-    import requests
+
     img = requests.get(image_url, timeout=60).content
+
     with open(save_path, "wb") as f:
         f.write(img)
-    print(f"[IMAGE SAVED] → {save_path}")
-    return image_url, save_path
-    
 
+    print(f"[IMAGE SAVED] → {save_path}")
+
+    return image_url, save_path
 
 # =========================================================
 # 6. 主流程（🔥完整闭环）
 # =========================================================
-def render(layout_json, w=None, h=None):
+# def render(layout_json, w=None, h=None):
+#     print("\n[1] JSON → STRUCTURED SPEC")
+#     spec = layout_to_structured_spec(layout_json)
+
+#     print("\n[RAW SPEC]")
+#     print(spec)
+
+#     # 🔥注入 rendering rules
+#     spec_with_rules = inject_rendering_rules(spec)
+    
+#     print(f"\n[2] BUILD PROMPT WITH RENDERING RULES INJECTED]")
+#     print(spec_with_rules)
+
+#     # prompt = structured_spec_to_prompt(spec_with_rules)
+#     prompt = spec_with_rules
+#     # print("\n[PROMPT]")
+#     # print(prompt[:])  # 防止太长刷屏
+
+#     print("\n[3] GENERATE IMAGE")
+#     image_url, path = generate_image(
+#         prompt,
+#         w=w,
+#         h=h
+#     )
+
+#     return image_url, path
+
+def render(layout_json, w=None, h=None, refs=None):
     print("\n[1] JSON → STRUCTURED SPEC")
     spec = layout_to_structured_spec(layout_json)
 
     print("\n[RAW SPEC]")
     print(spec)
 
-    # 🔥注入 rendering rules
     spec_with_rules = inject_rendering_rules(spec)
-    
+
     print(f"\n[2] BUILD PROMPT WITH RENDERING RULES INJECTED]")
     print(spec_with_rules)
 
-    # prompt = structured_spec_to_prompt(spec_with_rules)
     prompt = spec_with_rules
-    # print("\n[PROMPT]")
-    # print(prompt[:])  # 防止太长刷屏
 
     print("\n[3] GENERATE IMAGE")
+
     image_url, path = generate_image(
         prompt,
         w=w,
-        h=h
+        h=h,
+        refs=refs   # 新增
     )
 
     return image_url, path
+
 
 
 # # =========================================================

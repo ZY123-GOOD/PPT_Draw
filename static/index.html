@@ -120,7 +120,7 @@
 					</div>
 					<!-- 右侧：文本生成 PPT -->
 					<div style="flex: 1; padding-left: 5px;">
-						<h4 style="font-size:14px; color:#555; margin-top:0;">📝 基于文本生成 PPT</h4>
+						<h4 style="font-size:14px; color:#555; margin-top:0;">📝 基于文本生成 PPT 布局</h4>
 						<textarea id="pptUserInput" rows="4" placeholder="输入PPT需求，如：做一个RLHF vs DPO的对比PPT，用表格+坐标系展示差异" style="font-size: 12px; resize: vertical;"></textarea>
 						<button id="btnGenPPT" onclick="generatePPTLayout()" style="font-size: 13px; padding: 8px; background: #5856D6;">✨ AI 生成布局</button>
 					</div>
@@ -129,6 +129,22 @@
 	        <!-- Step 2 -->
 	        <div class="card">
 	            <h3>2. 框架布局交互编辑</h3>
+				<div class="row" style="margin-bottom:10px;">
+					<div>
+						<input type="file" id="jsonFileInput" accept=".json"
+							style="font-size:12px; padding:6px;">
+					</div>
+					<div>
+						<button onclick="uploadLocalJson()" style="background:#34C759;">
+							📤 上传本地JSON
+						</button>
+					</div>
+					<div>
+						<button onclick="downloadJson()" style="background:#FF9500;">
+							📥 下载当前JSON
+						</button>
+					</div>
+				</div>
 	            <input type="text" id="jsonPath" placeholder="JSON 路径 (如 assets/layout.json)" value="assets/layout.json">
 	            <button onclick="loadLayout()">📂 加载并渲染布局</button>
 	            <!-- 画布高度根据图片比例自适应，这里设个固定高度 -->
@@ -148,6 +164,18 @@
 			<!-- Step 3 -->
 			<div class="card">
 				<h3>3. 绘制生成</h3>
+				<div style="margin-bottom: 10px;">
+					<label style="font-size: 12px; color: #666;">参考图（最多3张）</label>
+					<input
+						type="file"
+						id="refImages"
+						multiple
+						accept="image/png, image/jpeg, image/webp"
+					>
+				</div>
+
+				<!-- 显示参考图的区域 -->
+				<div id="refImagesPreview" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;"></div>
 				<div class="row" style="margin-bottom: 10px;">
 					<div>
 						<label style="font-size:12px; color:#666;">图像宽度</label>
@@ -524,81 +552,277 @@
 	                alert("保存失败: " + e.message);
 	            }
 	        }
+			async function uploadLocalJson() {
+				const fileInput = document.getElementById('jsonFileInput');
 
+				if (!fileInput.files[0]) {
+					alert("请先选择 JSON 文件！");
+					return;
+				}
+
+				const file = fileInput.files[0];
+				const reader = new FileReader();
+
+				reader.onload = function(e) {
+					try {
+						const json = JSON.parse(e.target.result);
+
+						if (!json.elements) {
+							alert("JSON格式错误：缺少 elements");
+							return;
+						}
+
+						layoutData = json;
+						renderCanvas();
+
+						alert("✅ JSON 已加载到编辑器！");
+					} catch(err) {
+						alert("❌ JSON解析失败：" + err.message);
+					}
+				};
+
+				reader.readAsText(file);
+			}
+			function downloadJson() {
+				if (!layoutData) {
+					alert("当前没有可下载的布局数据！");
+					return;
+				}
+
+				const dataStr = JSON.stringify(layoutData, null, 2);
+				const blob = new Blob([dataStr], { type: "application/json" });
+
+				const url = URL.createObjectURL(blob);
+
+				const a = document.createElement("a");
+				a.href = url;
+				a.download = "layout_updated.json";
+				a.click();
+
+				URL.revokeObjectURL(url);
+			}
 			// ================= Step 3: 绘制图像 =================
+
+			let refFileStore = []; // ⭐真正存文件
+			document.getElementById('refImages').addEventListener('change', handleFileUpload);
+			function handleFileUpload(event) {
+
+				const files = Array.from(event.target.files);
+				const previewDiv = document.getElementById('refImagesPreview');
+
+				previewDiv.innerHTML = '';
+				refFileStore = [];
+
+				if (files.length > 3) {
+					alert("最多只能上传 3 张参考图！");
+					return;
+				}
+
+				files.forEach((file, index) => {
+
+					refFileStore.push(file); // ⭐保存真实文件
+
+					const reader = new FileReader();
+
+					reader.onload = (e) => {
+
+						const previewItem = document.createElement('div');
+						previewItem.style.display = 'flex';
+						previewItem.style.flexDirection = 'column';
+						previewItem.style.alignItems = 'center';
+						previewItem.style.border = '1px solid #ddd';
+						previewItem.style.padding = '6px';
+						previewItem.style.borderRadius = '6px';
+
+						// 图片
+						const imgPreview = document.createElement('img');
+						imgPreview.src = e.target.result;
+						imgPreview.style.width = '100px';
+						imgPreview.style.height = '100px';
+						imgPreview.style.objectFit = 'cover';
+						imgPreview.style.borderRadius = '4px';
+
+						// 文件名
+						const nameDiv = document.createElement('div');
+						nameDiv.style.fontSize = '11px';
+						nameDiv.style.marginTop = '4px';
+						nameDiv.style.textAlign = 'center';
+						nameDiv.innerText = file.name;
+
+						// 删除按钮
+						const deleteBtn = document.createElement('button');
+						deleteBtn.innerText = '删除';
+						deleteBtn.style.fontSize = '11px';
+						deleteBtn.style.marginTop = '5px';
+						deleteBtn.style.cursor = 'pointer';
+
+						deleteBtn.onclick = () => {
+
+							// 从 store 删除
+							refFileStore.splice(index, 1);
+
+							// 重新渲染
+							handleFileUpload({
+								target: { files: refFileStore }
+							});
+						};
+
+						previewItem.appendChild(imgPreview);
+						previewItem.appendChild(nameDiv);
+						previewItem.appendChild(deleteBtn);
+
+						previewDiv.appendChild(previewItem);
+					};
+
+					reader.readAsDataURL(file);
+				});
+			}
+
+
 			async function drawImage() {
+
 				const btn = document.getElementById('btnDraw');
 				btn.innerText = '⏳ 渲染管线执行中...';
 				btn.disabled = true;
+
 				const currentImagePath = document.getElementById('serverImagePath').value;
 				const imgWidth = parseInt(document.getElementById('imgWidth').value);
 				const imgHeight = parseInt(document.getElementById('imgHeight').value);
+
 				if (!imgWidth || !imgHeight) {
 					alert("请输入图像的宽度和高度！");
+					btn.disabled = false;
 					return;
 				}
+
 				const numImages = parseInt(document.getElementById('numImages').value);
+
 				if (isNaN(numImages) || numImages < 1 || numImages > 6) {
 					alert("生成数量必须在 1 到 6 之间！");
 					btn.innerText = '🎨 批量绘制图像';
 					btn.disabled = false;
 					return;
 				}
+
 				const gallery = document.getElementById('output-gallery');
-				gallery.innerHTML = '<div style="color: #007AFF; text-align: center; grid-column: 1/-1; font-weight:bold;">⏳ 正在生成 ' + numImages + ' 张图像，请耐心等待...</div>';
+
+				gallery.innerHTML =
+					'<div style="color:#007AFF;text-align:center;grid-column:1/-1;font-weight:bold;">⏳ 正在生成 '
+					+ numImages +
+					' 张图像，请耐心等待...</div>';
+
 				try {
+
+					// ===============================
+					// 第一步：上传参考图（最多3张）
+					// ===============================
+
+					let refs = [];
+
+					const files = refFileStore || [];
+
+					if (files.length > 0) {
+
+						const fd = new FormData();
+
+						for (let i = 0; i < Math.min(files.length, 3); i++) {
+							fd.append("files", files[i]);
+						}
+
+						const uploadRes = await fetch(`${BASE_URL}/api/upload_references`, {
+							method: 'POST',
+							body: fd
+						});
+
+						const uploadData = await uploadRes.json();
+
+						if (uploadData.success) {
+							refs = uploadData.file_paths;
+						} else {
+							alert("参考图上传失败：" + uploadData.msg);
+							return
+						}
+					}
+
+					// ===============================
+					// 第二步：调用绘图接口
+					// ===============================
+
 					const res = await fetch(`${BASE_URL}/api/draw`, {
 						method: 'POST',
 						headers: { 'Content-Type': 'application/json' },
 						body: JSON.stringify({
-							image_path: currentImagePath || null, // 可能为空
+							image_path: currentImagePath || null,
 							json_path: document.getElementById('jsonPath').value,
 							num_images: numImages,
-							width: imgWidth,    // 传尺寸
-							height: imgHeight   // 传尺寸
+							width: imgWidth,
+							height: imgHeight,
+							refs: refs
 						})
 					});
+
 					const data = await res.json();
-					gallery.innerHTML = ''; // 清空加载提示
+
+					gallery.innerHTML = '';
+
 					if (data.success) {
+
 						const imageCount = data.output_paths.length;
+
 						if (imageCount === 1) {
 							gallery.style.gridTemplateColumns = '1fr';
-							gallery.style.maxWidth = '50%'; // 单图限制最大宽度，居中展示
+							gallery.style.maxWidth = '50%';
 							gallery.style.margin = '0 auto';
+
 						} else if (imageCount === 2) {
-							gallery.style.gridTemplateColumns = 'repeat(2, 1fr)';
+							gallery.style.gridTemplateColumns = 'repeat(2,1fr)';
 							gallery.style.maxWidth = '80%';
 							gallery.style.margin = '0 auto';
+
 						} else {
-							// 3张以上恢复自适应
-							gallery.style.gridTemplateColumns = 'repeat(auto-fit, minmax(240px, 1fr))';
+							gallery.style.gridTemplateColumns =
+								'repeat(auto-fit,minmax(240px,1fr))';
 							gallery.style.maxWidth = '100%';
 							gallery.style.margin = '0';
 						}
-						// 👇 遍历后端返回的路径数组，渲染多图
+
 						data.output_paths.forEach((path, index) => {
+
 							const itemDiv = document.createElement('div');
 							itemDiv.className = 'gallery-item';
+
 							const img = document.createElement('img');
 							img.src = `${BASE_URL}/${path}?t=${new Date().getTime()}`;
-							// 点击图片放大或后续操作可在此扩展
+
 							const label = document.createElement('div');
 							label.className = 'img-label';
 							label.innerText = `方案 ${index + 1}`;
+
 							itemDiv.appendChild(img);
 							itemDiv.appendChild(label);
+
 							gallery.appendChild(itemDiv);
 						});
+
 						alert(`✅ 成功生成 ${numImages} 张图像！`);
+
 					} else {
+
 						alert('❌ 绘制失败: ' + data.msg);
-						gallery.innerHTML = '<div style="color: #FF3B30; text-align: center; grid-column: 1/-1;">生成失败</div>';
+
+						gallery.innerHTML =
+							'<div style="color:#FF3B30;text-align:center;grid-column:1/-1;">生成失败</div>';
 					}
+
 				} catch (e) {
+
 					alert('请求失败: ' + e.message);
-					gallery.innerHTML = '<div style="color: #FF3B30; text-align: center; grid-column: 1/-1;">请求中断</div>';
+
+					gallery.innerHTML =
+						'<div style="color:#FF3B30;text-align:center;grid-column:1/-1;">请求中断</div>';
+
 				} finally {
+
 					btn.innerText = '🎨 批量绘制图像';
 					btn.disabled = false;
 				}

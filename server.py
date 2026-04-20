@@ -41,11 +41,12 @@ class SaveJsonRequest(BaseModel):
     json_path: str
     data: dict
 class DrawRequest(BaseModel):
-    image_path: Optional[str] = None
-    json_path: str
-    num_images: int = 4
-    width: Optional[int] = None
-    height: Optional[int] = None
+    image_path: Optional[str] = None  # 原有图像路径
+    json_path: str  # 布局的JSON路径
+    num_images: int = 4  # 生成的图片数量
+    width: Optional[int] = None  # 宽度
+    height: Optional[int] = None  # 高度
+    refs: Optional[list[str]] = []  # 新增：参考图列表，最多支持3张
     
     
 # === 新增请求模型 ===
@@ -164,24 +165,31 @@ def api_draw_image(req: DrawRequest):
                 real_width, real_height = img.size
         else:
             return {"success": False, "msg": "未提供图像尺寸，且无参考图像路径，无法生成"}
+
         # 读取最新编辑的 JSON
         with open(req.json_path, "r", encoding="utf-8") as f:
             layout = json.load(f)
+
         output_paths = []
         # 👇 循环生成指定数量的图片
         for i in range(req.num_images):
             print(f"🚀 正在执行渲染管线 [{i+1}/{req.num_images}]...")
+
+            # 修改：把 refs 传递到 render_drawing 函数
             _, save_path = render_drawing(
                 layout_json=layout,
                 w=real_width,
-                h=real_height
+                h=real_height,
+                refs=req.refs  # 传入参考图
             )
+            
             # 为了避免覆盖，将生成的图片重命名带序号
             final_path = f"outputs/output_{i+1}.png"
             if os.path.exists(final_path):
                 os.remove(final_path)
             shutil.move(save_path, final_path)
             output_paths.append(final_path)
+
         # 👇 返回图片路径的数组
         return {"success": True, "output_paths": output_paths}
     except Exception as e:
@@ -189,6 +197,42 @@ def api_draw_image(req: DrawRequest):
         traceback.print_exc()
         return {"success": False, "msg": f"绘制失败: {str(e)}"}
     
+    
+from fastapi import UploadFile, File
+import uuid
+
+@app.post("/api/upload_references")
+async def upload_references(files: list[UploadFile] = File(...)):
+
+    try:
+        save_dir = "assets/refs"
+        os.makedirs(save_dir, exist_ok=True)
+
+        file_paths = []
+
+        for file in files[:3]:
+
+            ext = os.path.splitext(file.filename)[-1]
+            filename = f"{uuid.uuid4().hex}{ext}"
+
+            save_path = os.path.join(save_dir, filename)
+
+            with open(save_path, "wb") as f:
+                f.write(await file.read())
+
+            file_paths.append(save_path)
+
+        return {
+            "success": True,
+            "file_paths": file_paths
+        }
+
+    except Exception as e:
+        return {
+            "success": False,
+            "msg": str(e)
+        }
+
 from fastapi.staticfiles import StaticFiles
 import os
  
